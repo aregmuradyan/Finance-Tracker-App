@@ -12,7 +12,10 @@ public class MainWindow extends Application {
     public void start(Stage stage) {
         BorderPane root = new BorderPane();
 
-        root.setCenter(new Label("Personal Finance Tracker"));
+        Sidebar sidebar = new Sidebar();
+
+        root.setLeft(sidebar);
+        root.setCenter(new Label("Dashboard"));
 
         Scene scene = new Scene(root, 1000, 700);
 
