@@ -5,6 +5,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import com.aregmuradyan.financetracker.ui.views.DashboardView;
+import com.aregmuradyan.financetracker.ui.views.ExchangeView;
+import com.aregmuradyan.financetracker.ui.views.LogView;
+import com.aregmuradyan.financetracker.ui.views.TransactionsView;
 
 public class MainWindow extends Application {
 
@@ -15,8 +19,18 @@ public class MainWindow extends Application {
         Sidebar sidebar = new Sidebar();
 
         root.setLeft(sidebar);
-        root.setCenter(new Label("Dashboard"));
+        root.setCenter(new DashboardView());
+        sidebar.getDashboardButton().setOnAction(e ->
+                root.setCenter(new DashboardView()));
 
+        sidebar.getTransactionsButton().setOnAction(e ->
+                root.setCenter(new TransactionsView()));
+
+        sidebar.getExchangeButton().setOnAction(e ->
+                root.setCenter(new ExchangeView()));
+
+        sidebar.getLogsButton().setOnAction(e ->
+                root.setCenter(new LogView()));
         Scene scene = new Scene(root, 1000, 700);
 
         stage.setTitle("Finance Tracker");
