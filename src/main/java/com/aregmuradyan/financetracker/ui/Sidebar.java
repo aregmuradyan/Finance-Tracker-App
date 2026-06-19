@@ -9,6 +9,7 @@ public class Sidebar extends VBox {
     private final Button transactionsButton;
     private final Button exchangeButton;
     private final Button logsButton;
+    private final Button analyticsButton;
 
     public Button getDashboardButton() {
         return dashboardButton;
@@ -26,11 +27,16 @@ public class Sidebar extends VBox {
         return logsButton;
     }
 
+    public Button getAnalyticsButton() {
+        return analyticsButton;
+    }
+
     public Sidebar() {
         dashboardButton = new Button("Dashboard");
         transactionsButton = new Button("Transactions");
         exchangeButton = new Button("Exchange Rates");
         logsButton = new Button("Personal Log");
+        analyticsButton = new Button("Analytics");
         setSpacing(10);
         setPadding(new Insets(20));
         setPrefWidth(200);
@@ -39,12 +45,14 @@ public class Sidebar extends VBox {
         transactionsButton.setMaxWidth(Double.MAX_VALUE);
         exchangeButton.setMaxWidth(Double.MAX_VALUE);
         logsButton.setMaxWidth(Double.MAX_VALUE);
+        analyticsButton.setMaxWidth(Double.MAX_VALUE);
 
         getChildren().addAll(
                 dashboardButton,
                 transactionsButton,
                 exchangeButton,
-                logsButton
+                logsButton,
+                analyticsButton
         );
     }
 }

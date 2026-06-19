@@ -15,4 +15,8 @@ public class TransactionRepository {
     public List<Transaction> getAllTransactions() {
         return transactions;
     }
+
+    public void removeTransaction(Transaction transaction) {
+        transactions.remove(transaction);
+    }
 }
