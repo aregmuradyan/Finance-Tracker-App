@@ -51,7 +51,9 @@ public class TransactionsView extends VBox {
         DatePicker datePicker = new DatePicker(LocalDate.now());
 
         Button addButton = new Button("Add Transaction");
+        addButton.getStyleClass().add("action-button");
         Button removeButton = new Button("Remove Selected");
+        removeButton.getStyleClass().add("action-button");
 
         TableView<Transaction> table = new TableView<>(transactionList);
 

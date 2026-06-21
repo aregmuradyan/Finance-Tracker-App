@@ -11,48 +11,6 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-    /*    TransactionRepository repository = new TransactionRepository();
-        TransactionService service = new TransactionService(repository);
-        service.addTransaction(
-                new Transaction(
-                        1,
-                        "Lunch",
-                        "KFC",
-                        5000,
-                        "AMD",
-                        TransactionType.EXPENSE,
-                        Category.FOOD,
-                        LocalDate.now()
-                )
-        );
-
-        service.addTransaction(
-                new Transaction(
-                        2,
-                        "Dinner",
-                        "Pizza",
-                        3000,
-                        "AMD",
-                        TransactionType.EXPENSE,
-                        Category.FOOD,
-                        LocalDate.now()
-                )
-        );
-
-        service.addTransaction(
-                new Transaction(
-                        3,
-                        "Taxi",
-                        "Yandex",
-                        2000,
-                        "AMD",
-                        TransactionType.EXPENSE,
-                        Category.TRANSPORT,
-                        LocalDate.now()
-                )
-        );
-        System.out.println(service.getExpensesByCategory());//*/
-
         MainWindow.launch(MainWindow.class, args);
     }
 
