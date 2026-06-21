@@ -41,7 +41,9 @@ public class MainWindow extends Application {
         sidebar.getAnalyticsButton().setOnAction(e ->
                 root.setCenter(new AnalyticsView(service)));
         Scene scene = new Scene(root, 1000, 700);
-
+        scene.getStylesheets().add(
+                getClass().getResource("/styles.css").toExternalForm()
+        );
         stage.setTitle("Finance Tracker");
         stage.setScene(scene);
         stage.show();

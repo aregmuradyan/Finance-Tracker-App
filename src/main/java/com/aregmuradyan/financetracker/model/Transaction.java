@@ -24,6 +24,9 @@ public class Transaction {
         this.date = date;
     }
 
+    public Transaction() {
+    }
+
     public void setId(long id) {
         this.id = id;
     }
