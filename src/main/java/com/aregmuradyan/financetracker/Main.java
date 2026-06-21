@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        TransactionRepository repository = new TransactionRepository();
+    /*    TransactionRepository repository = new TransactionRepository();
         TransactionService service = new TransactionService(repository);
         service.addTransaction(
                 new Transaction(
@@ -51,8 +51,9 @@ public class Main {
                         LocalDate.now()
                 )
         );
-        System.out.println(service.getExpensesByCategory());
-        //MainWindow.launch(MainWindow.class, args);
+        System.out.println(service.getExpensesByCategory());//*/
+
+        MainWindow.launch(MainWindow.class, args);
     }
 
 }

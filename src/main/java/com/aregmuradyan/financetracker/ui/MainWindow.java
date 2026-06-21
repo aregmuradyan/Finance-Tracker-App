@@ -39,7 +39,7 @@ public class MainWindow extends Application {
                 root.setCenter(new LogView()));
 
         sidebar.getAnalyticsButton().setOnAction(e ->
-                root.setCenter(new AnalyticsView()));
+                root.setCenter(new AnalyticsView(service)));
         Scene scene = new Scene(root, 1000, 700);
 
         stage.setTitle("Finance Tracker");
