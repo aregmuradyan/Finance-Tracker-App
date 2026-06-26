@@ -1,6 +1,7 @@
 package com.aregmuradyan.financetracker.ui;
 
 import com.aregmuradyan.financetracker.repository.LogRepository;
+import com.aregmuradyan.financetracker.service.ExchangeRateService;
 import com.aregmuradyan.financetracker.service.LogService;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -27,6 +28,7 @@ public class MainWindow extends Application {
         TransactionService service = new TransactionService(repository);
         LogRepository logRepository = new LogRepository();
         LogService logService = new LogService(logRepository);
+        ExchangeRateService exchangeRateService = new ExchangeRateService();
         root.setLeft(sidebar);
         root.setCenter(new DashboardView(service));
 
@@ -37,7 +39,7 @@ public class MainWindow extends Application {
                 root.setCenter(new TransactionsView(service)));
 
         sidebar.getExchangeButton().setOnAction(e ->
-                root.setCenter(new ExchangeView()));
+                root.setCenter(new ExchangeView(exchangeRateService)));
 
         sidebar.getLogsButton().setOnAction(e ->
                 root.setCenter(new LogView(logService)));
