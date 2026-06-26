@@ -11,6 +11,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import com.aregmuradyan.financetracker.ui.helper.PageHeader;
 
 public class AnalyticsView extends VBox {
 
@@ -22,7 +23,11 @@ public class AnalyticsView extends VBox {
         setSpacing(15);
         setPadding(new Insets(20));
 
-        Label title = new Label("Analytics");
+        getStyleClass().add("page");
+        PageHeader header = new PageHeader(
+                "Analytics",
+                "Visualize your spending patterns"
+        );
 
         Map<Category, Double> categoryData =
                 service.getExpensesByCategory();
@@ -64,15 +69,15 @@ public class AnalyticsView extends VBox {
 
         expenseBarChart.getData().add(expenseSeries);
         VBox pieCard = new VBox();
-        pieCard.getStyleClass().add("analytics-card");
+        pieCard.getStyleClass().add("content-card");
         pieCard.getChildren().add(expensePieChart);
 
         VBox barCard = new VBox();
-        barCard.getStyleClass().add("analytics-card");
+        barCard.getStyleClass().add("content-card");
         barCard.getChildren().add(expenseBarChart);
 
         getChildren().addAll(
-                title,
+                header,
                 pieCard,
                 barCard
         );

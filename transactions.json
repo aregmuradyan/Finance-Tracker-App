@@ -1,1 +1,28 @@
-[ ]
+[ {
+  "id" : 1,
+  "name" : "a",
+  "description" : "a",
+  "amount" : 15000.0,
+  "currency" : "EUR",
+  "type" : "EXPENSE",
+  "category" : "TRANSPORT",
+  "date" : [ 2026, 6, 26 ]
+}, {
+  "id" : 2,
+  "name" : "b",
+  "description" : "b",
+  "amount" : 12431.0,
+  "currency" : "AMD",
+  "type" : "EXPENSE",
+  "category" : "ENTERTAINMENT",
+  "date" : [ 2026, 6, 26 ]
+}, {
+  "id" : 3,
+  "name" : "a",
+  "description" : "b",
+  "amount" : 150000.0,
+  "currency" : "AMD",
+  "type" : "INCOME",
+  "category" : "OTHER",
+  "date" : [ 2026, 6, 26 ]
+} ]

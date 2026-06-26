@@ -15,6 +15,7 @@ import com.aregmuradyan.financetracker.ui.views.TransactionsView;
 import com.aregmuradyan.financetracker.ui.views.AnalyticsView;
 import com.aregmuradyan.financetracker.repository.TransactionRepository;
 import com.aregmuradyan.financetracker.service.TransactionService;
+import javafx.scene.control.ScrollPane;
 
 public class MainWindow extends Application {
 
@@ -23,6 +24,12 @@ public class MainWindow extends Application {
         BorderPane root = new BorderPane();
 
         Sidebar sidebar = new Sidebar();
+        sidebar.prefWidthProperty().bind(
+                root.widthProperty().multiply(0.20)
+        );
+
+        sidebar.setMinWidth(220);
+        sidebar.setMaxWidth(280);
 
         TransactionRepository repository = new TransactionRepository();
         TransactionService service = new TransactionService(repository);
@@ -33,16 +40,16 @@ public class MainWindow extends Application {
         root.setCenter(new DashboardView(service));
 
         sidebar.getDashboardButton().setOnAction(e ->
-                root.setCenter(new DashboardView(service)));
+                root.setCenter(createScrollPane(new DashboardView(service))));
 
         sidebar.getTransactionsButton().setOnAction(e ->
-                root.setCenter(new TransactionsView(service)));
+                root.setCenter(createScrollPane(new TransactionsView(service))));
 
         sidebar.getExchangeButton().setOnAction(e ->
-                root.setCenter(new ExchangeView(exchangeRateService)));
+                root.setCenter(createScrollPane(new ExchangeView(exchangeRateService))));
 
         sidebar.getLogsButton().setOnAction(e ->
-                root.setCenter(new LogView(logService)));
+                root.setCenter(createScrollPane(new LogView(logService))));
 
         sidebar.getAnalyticsButton().setOnAction(e ->
                 root.setCenter(new AnalyticsView(service)));
@@ -53,5 +60,13 @@ public class MainWindow extends Application {
         stage.setTitle("Finance Tracker");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private ScrollPane createScrollPane(javafx.scene.Node content) {
+        ScrollPane scrollPane = new ScrollPane(content);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(false);
+        scrollPane.getStyleClass().add("main-scroll-pane");
+        return scrollPane;
     }
 }

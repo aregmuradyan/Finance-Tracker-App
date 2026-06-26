@@ -26,7 +26,6 @@ public class ExchangeRateService {
 
             HttpResponse<String> response =
                     client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
             JsonNode root = objectMapper.readTree(response.body());
             for (JsonNode node : root) {
                 String quote = node.get("quote").asText();

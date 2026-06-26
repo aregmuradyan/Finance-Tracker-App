@@ -4,6 +4,7 @@ import com.aregmuradyan.financetracker.model.Category;
 import com.aregmuradyan.financetracker.model.Transaction;
 import com.aregmuradyan.financetracker.model.TransactionType;
 import com.aregmuradyan.financetracker.service.TransactionService;
+import com.aregmuradyan.financetracker.ui.helper.PageHeader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -27,6 +28,11 @@ public class TransactionsView extends VBox {
         setSpacing(15);
         setPadding(new Insets(20));
 
+        getStyleClass().add("page");
+        PageHeader header = new PageHeader(
+                "Transactions",
+                "Manage your income and expenses"
+        );
         TextField nameField = new TextField();
         nameField.setPromptText("Name");
 
@@ -123,8 +129,11 @@ public class TransactionsView extends VBox {
             }
         });
 
-        getChildren().addAll(
-                new Label("Transactions"),
+
+        VBox formCard = new VBox();
+        formCard.getStyleClass().add("content-card");
+
+        formCard.getChildren().addAll(
                 nameField,
                 descriptionField,
                 amountField,
@@ -132,9 +141,21 @@ public class TransactionsView extends VBox {
                 typeBox,
                 categoryBox,
                 datePicker,
-                addButton,
+                addButton
+        );
+
+        VBox tableCard = new VBox();
+        tableCard.getStyleClass().add("content-card");
+
+        tableCard.getChildren().addAll(
                 removeButton,
                 table
+        );
+
+        getChildren().addAll(
+                header,
+                formCard,
+                tableCard
         );
     }
 }

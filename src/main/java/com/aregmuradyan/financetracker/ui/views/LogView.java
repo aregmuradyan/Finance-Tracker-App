@@ -2,6 +2,7 @@ package com.aregmuradyan.financetracker.ui.views;
 
 import com.aregmuradyan.financetracker.model.LogEntry;
 import com.aregmuradyan.financetracker.service.LogService;
+import com.aregmuradyan.financetracker.ui.helper.PageHeader;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -18,7 +19,11 @@ public class LogView extends VBox {
         setSpacing(15);
         setPadding(new Insets(20));
 
-        Label title = new Label("Personal Log");
+        getStyleClass().add("page");
+        PageHeader header = new PageHeader(
+                "Personal Log",
+                "Keep notes about your financial journey"
+        );
 
         TextArea logInput = new TextArea();
         logInput.setPromptText("Write a note about your spending, goals, or thoughts...");
@@ -55,12 +60,26 @@ public class LogView extends VBox {
             }
         });
 
-        getChildren().addAll(
-                title,
+        VBox inputCard = new VBox();
+        inputCard.getStyleClass().add("content-card");
+
+        inputCard.getChildren().addAll(
                 logInput,
-                addButton,
+                addButton
+        );
+
+        VBox logsCard = new VBox();
+        logsCard.getStyleClass().add("content-card");
+
+        logsCard.getChildren().addAll(
                 removeButton,
                 logList
+        );
+
+        getChildren().addAll(
+                header,
+                inputCard,
+                logsCard
         );
     }
 }

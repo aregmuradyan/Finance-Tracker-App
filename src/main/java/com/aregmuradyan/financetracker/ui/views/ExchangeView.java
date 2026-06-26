@@ -1,6 +1,7 @@
 package com.aregmuradyan.financetracker.ui.views;
 
 import com.aregmuradyan.financetracker.service.ExchangeRateService;
+import com.aregmuradyan.financetracker.ui.helper.PageHeader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -15,7 +16,11 @@ public class ExchangeView extends VBox {
 
         this.service = service;
 
-        Label title = new Label("Exchange Rates");
+        getStyleClass().add("page");
+        PageHeader header = new PageHeader(
+                "Exchange Rates",
+                "View live currency exchange rates"
+        );
 
         Label amdLabel = new Label();
         Label eurLabel = new Label();
@@ -36,12 +41,19 @@ public class ExchangeView extends VBox {
 
         refreshButton.fire();
 
-        getChildren().addAll(
-                title,
+
+        VBox card = new VBox();
+        card.getStyleClass().add("content-card");
+        card.getChildren().addAll(
+                header,
                 amdLabel,
                 eurLabel,
                 rubLabel,
                 refreshButton
+        );
+        getChildren().addAll(
+                header,
+                card
         );
 
     }

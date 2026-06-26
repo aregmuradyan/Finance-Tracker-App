@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -38,42 +40,91 @@ public class Sidebar extends VBox {
 
     public Sidebar() {
         getStyleClass().add("sidebar");
+
         dashboardButton = new Button("Dashboard");
         transactionsButton = new Button("Transactions");
         exchangeButton = new Button("Exchange Rates");
         logsButton = new Button("Personal Log");
         analyticsButton = new Button("Analytics");
+
         Label titleLabel = new Label("FinanceTracker");
-        Button collapseButton = new Button("◄");
-        setSpacing(10);
-        setPadding(new Insets(5));
-        setPrefWidth(200);
+        titleLabel.getStyleClass().add("sidebar-title");
+
+        var iconUrl = getClass().getResource("/icons/sidebar_collapse.png");
+
+        System.out.println("ICON URL = " + iconUrl);
+
+        if (iconUrl == null) {
+            throw new RuntimeException("Icon not found");
+        }
+
+        Image collapseImage = new Image(iconUrl.toExternalForm());
+
+        System.out.println("IMAGE ERROR = " + collapseImage.isError());
+
+        ImageView collapseIcon = new ImageView(collapseImage);
+        collapseIcon.setFitWidth(22);
+        collapseIcon.setFitHeight(22);
+        collapseIcon.setPreserveRatio(true);
+
+        Button collapseButton = new Button();
+        collapseButton.setGraphic(collapseIcon);
+        collapseButton.getStyleClass().add("collapse-button");
+
+
+        setSpacing(20);
+        setPadding(new Insets(18));
 
         HBox header = new HBox();
+        header.setAlignment(Pos.CENTER_LEFT);
         header.setSpacing(10);
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
+
         header.getChildren().addAll(
                 titleLabel,
-                spacer,
+                headerSpacer,
                 collapseButton
         );
-        header.setPadding(new Insets(10));
-        header.setAlignment(Pos.CENTER_LEFT);
-        dashboardButton.setMaxWidth(Double.MAX_VALUE);
-        transactionsButton.setMaxWidth(Double.MAX_VALUE);
-        exchangeButton.setMaxWidth(Double.MAX_VALUE);
-        logsButton.setMaxWidth(Double.MAX_VALUE);
-        analyticsButton.setMaxWidth(Double.MAX_VALUE);
+
+        Button[] buttons = {
+                dashboardButton,
+                transactionsButton,
+                analyticsButton,
+                exchangeButton,
+                logsButton
+        };
+
+        for (Button button : buttons) {
+            button.setMaxWidth(Double.MAX_VALUE);
+            button.getStyleClass().add("sidebar-button");
+        }
+
+        VBox navigation = new VBox();
+        navigation.setSpacing(10);
+        navigation.getChildren().addAll(
+                dashboardButton,
+                transactionsButton,
+                analyticsButton,
+                exchangeButton,
+                logsButton
+        );
+
+        Region footerSpacer = new Region();
+        VBox.setVgrow(footerSpacer, Priority.ALWAYS);
+
+        Label version = new Label("v1.0.0");
+        version.getStyleClass().add("sidebar-version");
+
+        VBox footer = new VBox(version);
+        footer.getStyleClass().add("sidebar-footer");
 
         getChildren().addAll(
                 header,
-                dashboardButton,
-                transactionsButton,
-                exchangeButton,
-                logsButton,
-                analyticsButton
+                navigation,
+                footerSpacer,
+                footer
         );
     }
 }
