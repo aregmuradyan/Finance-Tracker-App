@@ -39,20 +39,32 @@ public class MainWindow extends Application {
         root.setLeft(sidebar);
         root.setCenter(new DashboardView(service));
 
-        sidebar.getDashboardButton().setOnAction(e ->
-                root.setCenter(createScrollPane(new DashboardView(service))));
+        sidebar.getDashboardButton().setOnAction(e -> {
+            sidebar.setActiveButton(sidebar.getDashboardButton());
+            root.setCenter(createScrollPane(new DashboardView(service)));
+        });
+        root.setCenter(createScrollPane(new DashboardView(service)));
+        sidebar.setActiveButton(sidebar.getDashboardButton());
 
-        sidebar.getTransactionsButton().setOnAction(e ->
-                root.setCenter(createScrollPane(new TransactionsView(service))));
+        sidebar.getTransactionsButton().setOnAction(e -> {
+            sidebar.setActiveButton(sidebar.getTransactionsButton());
+            root.setCenter(createScrollPane(new TransactionsView(service)));
+        });
 
-        sidebar.getExchangeButton().setOnAction(e ->
-                root.setCenter(createScrollPane(new ExchangeView(exchangeRateService))));
+        sidebar.getExchangeButton().setOnAction(e -> {
+            sidebar.setActiveButton(sidebar.getExchangeButton());
+            root.setCenter(createScrollPane(new ExchangeView(exchangeRateService)));
+        });
 
-        sidebar.getLogsButton().setOnAction(e ->
-                root.setCenter(createScrollPane(new LogView(logService))));
+        sidebar.getLogsButton().setOnAction(e -> {
+            sidebar.setActiveButton(sidebar.getLogsButton());
+            root.setCenter(createScrollPane(new LogView(logService)));
+        });
 
-        sidebar.getAnalyticsButton().setOnAction(e ->
-                root.setCenter(new AnalyticsView(service)));
+        sidebar.getAnalyticsButton().setOnAction(e -> {
+            sidebar.setActiveButton(sidebar.getAnalyticsButton());
+            root.setCenter(createScrollPane(new AnalyticsView(service)));
+        });
         Scene scene = new Scene(root, 1000, 700);
         scene.getStylesheets().add(
                 getClass().getResource("/styles.css").toExternalForm()

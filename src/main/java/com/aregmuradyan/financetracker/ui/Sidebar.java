@@ -4,12 +4,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class Sidebar extends VBox {
     private final Button dashboardButton;
@@ -50,27 +49,12 @@ public class Sidebar extends VBox {
         Label titleLabel = new Label("FinanceTracker");
         titleLabel.getStyleClass().add("sidebar-title");
 
-        var iconUrl = getClass().getResource("/icons/sidebar_collapse.png");
-
-        System.out.println("ICON URL = " + iconUrl);
-
-        if (iconUrl == null) {
-            throw new RuntimeException("Icon not found");
-        }
-
-        Image collapseImage = new Image(iconUrl.toExternalForm());
-
-        System.out.println("IMAGE ERROR = " + collapseImage.isError());
-
-        ImageView collapseIcon = new ImageView(collapseImage);
-        collapseIcon.setFitWidth(22);
-        collapseIcon.setFitHeight(22);
-        collapseIcon.setPreserveRatio(true);
+        FontIcon collapseIcon = new FontIcon("fth-sidebar");
+        collapseIcon.getStyleClass().add("sidebar-icon");
 
         Button collapseButton = new Button();
         collapseButton.setGraphic(collapseIcon);
         collapseButton.getStyleClass().add("collapse-button");
-
 
         setSpacing(20);
         setPadding(new Insets(18));
@@ -126,5 +110,20 @@ public class Sidebar extends VBox {
                 footerSpacer,
                 footer
         );
+    }
+    public void setActiveButton(Button activeButton) {
+        Button[] buttons = {
+                dashboardButton,
+                transactionsButton,
+                analyticsButton,
+                exchangeButton,
+                logsButton
+        };
+
+        for (Button button : buttons) {
+            button.getStyleClass().remove("sidebar-button-active");
+        }
+
+        activeButton.getStyleClass().add("sidebar-button-active");
     }
 }

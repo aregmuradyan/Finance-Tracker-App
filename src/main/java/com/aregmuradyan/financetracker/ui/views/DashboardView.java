@@ -16,9 +16,6 @@ public class DashboardView extends VBox {
     public DashboardView(TransactionService service) {
         this.service = service;
 
-        setSpacing(15);
-        setPadding(new Insets(20));
-
         getStyleClass().add("page");
         PageHeader header = new PageHeader(
                 "Dashboard",

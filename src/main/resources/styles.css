@@ -36,7 +36,13 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 18, 0, 0, 6);
 }
 
+.content-card .label {
+    -fx-text-fill: #1f2937;
+}
+
 /* Sidebar */
+
+/* Sidebar TITLE + BUTTONS*/
 
 .sidebar {
     -fx-background-color: #111827;
@@ -64,17 +70,64 @@
     -fx-text-fill: white;
 }
 
+.sidebar-button-active {
+    -fx-background-color: rgba(96, 165, 250, 0.18);
+    -fx-text-fill: white;
+}
+
+.sidebar-button-active:hover {
+    -fx-background-color: rgba(96, 165, 250, 0.28);
+}
+
+.sidebar-button-active:pressed {
+    -fx-background-color: rgba(96, 165, 250, 0.36);
+}
+
+/* Sidebar COLLAPSE */
+
 .collapse-button {
-    -fx-color: white;
     -fx-background-color: transparent;
-    -fx-background-radius: 10;
-    -fx-padding: 8;
+    -fx-background-radius: 8;
+
+    -fx-padding: 0;
+
+    -fx-pref-width: 36;
+    -fx-pref-height: 36;
+
+    -fx-min-width: 36;
+    -fx-min-height: 36;
+
+    -fx-max-width: 36;
+    -fx-max-height: 36;
+
+    -fx-alignment: center;
+
+    -fx-content-display: graphic-only;
+
     -fx-cursor: hand;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
 }
 
 .collapse-button:hover {
     -fx-background-color: rgba(255,255,255,0.08);
 }
+
+.collapse-button:pressed {
+    -fx-background-color: rgba(255,255,255,0.16);
+}
+
+.sidebar-icon {
+    -fx-icon-color: white;
+    -fx-icon-size: 18px;
+}
+
+
+/* Sidebar FOOTER */
 
 .sidebar-version {
     -fx-text-fill: #9ca3af;
