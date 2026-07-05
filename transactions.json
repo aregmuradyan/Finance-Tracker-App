@@ -1,6 +1,6 @@
 [ {
   "id" : 1,
-  "name" : "ar",
+  "name" : "a",
   "description" : "a",
   "amount" : 150000.0,
   "currency" : "AMD",
@@ -25,4 +25,13 @@
   "type" : "EXPENSE",
   "category" : "ENTERTAINMENT",
   "date" : [ 2026, 7, 5 ]
+}, {
+  "id" : 1,
+  "name" : "apples",
+  "description" : "bought some apples",
+  "amount" : 1200.0,
+  "currency" : "USD",
+  "type" : "EXPENSE",
+  "category" : "FOOD",
+  "date" : [ 2026, 6, 5 ]
 } ]

@@ -40,39 +40,57 @@
     -fx-text-fill: #1f2937;
 }
 
-/* Sidebar */
-
-/* Sidebar TITLE + BUTTONS*/
+/* =========================
+   SIDEBAR
+   ========================= */
 
 .sidebar {
     -fx-background-color: #111827;
     -fx-padding: 18;
 }
 
+.sidebar-collapsed {
+    -fx-padding: 18 10 18 10;
+}
+
+
+/* =========================
+   SIDEBAR HEADER
+   ========================= */
+
 .sidebar-title {
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
+
+/* =========================
+   SIDEBAR NAV BUTTONS
+   ========================= */
+
 .sidebar-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #d1d5db;
-    -fx-font-size: 14px;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 12 14;
     -fx-background-radius: 12;
+    -fx-padding: 12 14;
+    -fx-alignment: CENTER_LEFT;
     -fx-border-width: 0;
+    -fx-cursor: hand;
+    -fx-content-display: graphic-only;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .sidebar-button:hover {
     -fx-background-color: #1f2937;
-    -fx-text-fill: white;
+}
+
+.sidebar-button:pressed {
+    -fx-background-color: rgba(255,255,255,0.10);
 }
 
 .sidebar-button-active {
     -fx-background-color: rgba(96, 165, 250, 0.18);
-    -fx-text-fill: white;
 }
 
 .sidebar-button-active:hover {
@@ -83,12 +101,49 @@
     -fx-background-color: rgba(96, 165, 250, 0.36);
 }
 
-/* Sidebar COLLAPSE */
+
+/* Button inner HBox: icon + text */
+
+.sidebar-button-content {
+    -fx-spacing: 12;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.sidebar-button-text {
+    -fx-text-fill: #d1d5db;
+    -fx-font-size: 16px;
+}
+
+.sidebar-button:hover .sidebar-button-text {
+    -fx-text-fill: white;
+}
+
+.sidebar-button-active .sidebar-button-text {
+    -fx-text-fill: white;
+}
+
+
+/* Collapsed nav buttons */
+
+.sidebar-collapsed .sidebar-button {
+    -fx-padding: 10 0;
+    -fx-background-radius: 10;
+    -fx-alignment: CENTER;
+}
+
+.sidebar-collapsed .sidebar-button-content {
+    -fx-spacing: 0;
+    -fx-alignment: CENTER;
+}
+
+
+/* =========================
+   COLLAPSE BUTTON
+   ========================= */
 
 .collapse-button {
     -fx-background-color: transparent;
     -fx-background-radius: 8;
-
     -fx-padding: 0;
 
     -fx-pref-width: 36;
@@ -100,10 +155,8 @@
     -fx-max-width: 36;
     -fx-max-height: 36;
 
-    -fx-alignment: center;
-
+    -fx-alignment: CENTER;
     -fx-content-display: graphic-only;
-
     -fx-cursor: hand;
 
     -fx-focus-color: transparent;
@@ -121,13 +174,20 @@
     -fx-background-color: rgba(255,255,255,0.16);
 }
 
+
+/* =========================
+   ICONS
+   ========================= */
+
 .sidebar-icon {
     -fx-icon-color: white;
     -fx-icon-size: 18px;
 }
 
 
-/* Sidebar FOOTER */
+/* =========================
+   FOOTER
+   ========================= */
 
 .sidebar-version {
     -fx-text-fill: #9ca3af;

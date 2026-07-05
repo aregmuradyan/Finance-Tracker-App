@@ -1,6 +1,5 @@
 package com.aregmuradyan.financetracker.ui;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,7 +8,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
-import javafx.scene.control.ContentDisplay;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.animation.FadeTransition;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Sidebar extends VBox {
     private final Button dashboardButton;
@@ -20,10 +25,15 @@ public class Sidebar extends VBox {
     private final Label titleLabel;
     private final Label version;
 
+    private HBox header;
+    private Region headerSpacer;
+    private FontIcon collapseIcon;
+
     private boolean collapsed = false;
 
     private static final double EXPANDED_WIDTH = 240;
     private static final double COLLAPSED_WIDTH = 76;
+    private final Map<Button, Label> buttonTextLabels = new HashMap<>();
 
     public Button getDashboardButton() {
         return dashboardButton;
@@ -57,25 +67,36 @@ public class Sidebar extends VBox {
         titleLabel = new Label("FinanceTracker");
         titleLabel.getStyleClass().add("sidebar-title");
 
-        FontIcon collapseIcon = new FontIcon("fth-sidebar");
+        collapseIcon = new FontIcon("fth-sidebar");
         collapseIcon.getStyleClass().add("sidebar-icon");
 
         Button collapseButton = new Button();
         collapseButton.setGraphic(collapseIcon);
         collapseButton.getStyleClass().add("collapse-button");
+        collapseButton.setOnMouseEntered(e -> {
+            if (collapsed) {
+                collapseIcon.setIconLiteral("fth-sidebar");
+            }
+        });
+
+        collapseButton.setOnMouseExited(e -> {
+            if (collapsed) {
+                collapseIcon.setIconLiteral("fth-menu");
+            }
+        });
         collapseButton.setOnAction(e -> toggleCollapse());
 
         setSpacing(20);
-        setPadding(new Insets(18));
+
         setPrefWidth(EXPANDED_WIDTH);
         setMinWidth(EXPANDED_WIDTH);
         setMaxWidth(EXPANDED_WIDTH);
 
-        HBox header = new HBox();
+        header = new HBox();
         header.setAlignment(Pos.CENTER_LEFT);
         header.setSpacing(10);
 
-        Region headerSpacer = new Region();
+        headerSpacer = new Region();
         HBox.setHgrow(headerSpacer, Priority.ALWAYS);
 
         header.getChildren().addAll(
@@ -126,11 +147,21 @@ public class Sidebar extends VBox {
         FontIcon icon = new FontIcon(iconName);
         icon.getStyleClass().add("sidebar-icon");
 
-        Button button = new Button(text);
-        button.setGraphic(icon);
+        Label textLabel = new Label(text);
+        textLabel.getStyleClass().add("sidebar-button-text");
+
+        HBox content = new HBox(icon, textLabel);
+        content.getStyleClass().add("sidebar-button-content");
+        content.setSpacing(12);
+        content.setAlignment(Pos.CENTER_LEFT);
+
+        Button button = new Button();
+        button.setGraphic(content);
         button.setUserData(text);
-        button.setContentDisplay(ContentDisplay.LEFT);
         button.getStyleClass().add("sidebar-button");
+        button.setMaxWidth(Double.MAX_VALUE);
+
+        buttonTextLabels.put(button, textLabel);
 
         return button;
     }
@@ -147,9 +178,7 @@ public class Sidebar extends VBox {
         };
 
         if (collapsed) {
-            setPrefWidth(COLLAPSED_WIDTH);
-            setMinWidth(COLLAPSED_WIDTH);
-            setMaxWidth(COLLAPSED_WIDTH);
+            animateWidth(COLLAPSED_WIDTH);
 
             titleLabel.setVisible(false);
             titleLabel.setManaged(false);
@@ -157,15 +186,28 @@ public class Sidebar extends VBox {
             version.setVisible(false);
             version.setManaged(false);
 
+            header.setAlignment(Pos.CENTER);
+
+            headerSpacer.setVisible(false);
+            headerSpacer.setManaged(false);
+
+            getStyleClass().add("sidebar-collapsed");
+
+            collapseIcon.setIconLiteral("fth-menu");
             for (Button button : buttons) {
-                button.setText("");
-                button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                Label label = buttonTextLabels.get(button);
+
+                if (label != null) {
+                    fadeNode(label, 0);
+                    label.setManaged(false);
+                    label.setVisible(false);
+                }
+
                 button.setAlignment(Pos.CENTER);
+                button.setMaxWidth(Double.MAX_VALUE);
             }
         } else {
-            setPrefWidth(EXPANDED_WIDTH);
-            setMinWidth(EXPANDED_WIDTH);
-            setMaxWidth(EXPANDED_WIDTH);
+            animateWidth(EXPANDED_WIDTH);
 
             titleLabel.setVisible(true);
             titleLabel.setManaged(true);
@@ -173,12 +215,42 @@ public class Sidebar extends VBox {
             version.setVisible(true);
             version.setManaged(true);
 
+            header.setAlignment(Pos.CENTER_LEFT);
+
+            headerSpacer.setVisible(true);
+            headerSpacer.setManaged(true);
+
+            getStyleClass().remove("sidebar-collapsed");
+
+
+            collapseIcon.setIconLiteral("fth-sidebar");
+
             for (Button button : buttons) {
-                button.setText((String) button.getUserData());
-                button.setContentDisplay(ContentDisplay.LEFT);
+                Label label = buttonTextLabels.get(button);
+
+                if (label != null) {
+                    label.setVisible(true);
+                    label.setManaged(true);
+                    fadeNode(label, 1);
+                }
+
                 button.setAlignment(Pos.CENTER_LEFT);
+                button.setMaxWidth(Double.MAX_VALUE);
             }
         }
+    }
+
+    private void animateWidth(double targetWidth) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.millis(180),
+                        new KeyValue(prefWidthProperty(), targetWidth),
+                        new KeyValue(minWidthProperty(), targetWidth),
+                        new KeyValue(maxWidthProperty(), targetWidth)
+                )
+        );
+
+        timeline.play();
     }
 
     public void setActiveButton(Button activeButton) {
@@ -195,5 +267,11 @@ public class Sidebar extends VBox {
         }
 
         activeButton.getStyleClass().add("sidebar-button-active");
+    }
+
+    private void fadeNode(javafx.scene.Node node, double targetOpacity) {
+        FadeTransition fade = new FadeTransition(Duration.millis(120), node);
+        fade.setToValue(targetOpacity);
+        fade.play();
     }
 }
