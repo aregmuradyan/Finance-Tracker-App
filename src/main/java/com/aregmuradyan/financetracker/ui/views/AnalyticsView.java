@@ -16,6 +16,8 @@ import com.aregmuradyan.financetracker.ui.helper.PageHeader;
 public class AnalyticsView extends VBox {
 
     private final TransactionService service;
+    private PieChart expensePieChart;
+    private BarChart<String, Number> expenseBarChart;
 
     public AnalyticsView(TransactionService service) {
         this.service = service;
@@ -29,45 +31,17 @@ public class AnalyticsView extends VBox {
                 "Visualize your spending patterns"
         );
 
-        Map<Category, Double> categoryData =
-                service.getExpensesByCategory();
-
-        PieChart expensePieChart = new PieChart();
+        expensePieChart = new PieChart();
         expensePieChart.setTitle("Spending by Category");
 
-        for (Map.Entry<Category, Double> entry : categoryData.entrySet()) {
-            expensePieChart.getData().add(
-                    new PieChart.Data(
-                            entry.getKey().toString(),
-                            entry.getValue()
-                    )
-            );
-        }
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
 
-        BarChart<String, Number> expenseBarChart =
-                new BarChart<>(xAxis, yAxis);
+        expenseBarChart = new BarChart<>(xAxis, yAxis);
 
         expenseBarChart.setTitle("Expenses by Category");
 
-        XYChart.Series<String, Number> expenseSeries =
-                new XYChart.Series<>();
 
-        expenseSeries.setName("Expenses");
-
-        for (Map.Entry<Category, Double> entry :
-                service.getExpensesByCategory().entrySet()) {
-
-            expenseSeries.getData().add(
-                    new XYChart.Data<>(
-                            entry.getKey().toString(),
-                            entry.getValue()
-                    )
-            );
-        }
-
-        expenseBarChart.getData().add(expenseSeries);
         VBox pieCard = new VBox();
         pieCard.getStyleClass().add("content-card");
         pieCard.getChildren().add(expensePieChart);
@@ -81,5 +55,35 @@ public class AnalyticsView extends VBox {
                 pieCard,
                 barCard
         );
+        refresh();
+    }
+    public void refresh() {
+        expensePieChart.getData().clear();
+        expenseBarChart.getData().clear();
+
+        Map<Category, Double> categoryData = service.getExpensesByCategory();
+
+        for (Map.Entry<Category, Double> entry : categoryData.entrySet()) {
+            expensePieChart.getData().add(
+                    new PieChart.Data(
+                            entry.getKey().toString(),
+                            entry.getValue()
+                    )
+            );
+        }
+
+        XYChart.Series<String, Number> expenseSeries = new XYChart.Series<>();
+        expenseSeries.setName("Expenses");
+
+        for (Map.Entry<Category, Double> entry : categoryData.entrySet()) {
+            expenseSeries.getData().add(
+                    new XYChart.Data<>(
+                            entry.getKey().toString(),
+                            entry.getValue()
+                    )
+            );
+        }
+
+        expenseBarChart.getData().add(expenseSeries);
     }
 }

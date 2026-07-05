@@ -12,6 +12,10 @@ import java.util.List;
 public class DashboardView extends VBox {
 
     private final TransactionService service;
+    private Label balanceLabel;
+    private Label incomeLabel;
+    private Label expensesLabel;
+    private VBox recentTransactionsBox;
 
     public DashboardView(TransactionService service) {
         this.service = service;
@@ -22,31 +26,15 @@ public class DashboardView extends VBox {
                 "Your financial overview"
         );
 
-        Label balanceLabel = new Label("Balance: " + service.getBalance() + " AMD");
-        Label incomeLabel = new Label("Income: " + service.getTotalIncome() + " AMD");
-        Label expensesLabel = new Label("Expenses: " + service.getTotalExpenses() + " AMD");
+        balanceLabel = new Label();
+        incomeLabel = new Label();
+        expensesLabel = new Label();
 
         Label recentTitle = new Label("Recent Transactions");
 
-        VBox recentTransactionsBox = new VBox();
+        recentTransactionsBox = new VBox();
         recentTransactionsBox.setSpacing(5);
 
-        List<Transaction> transactions = service.getAllTransactions();
-
-        int startIndex = Math.max(0, transactions.size() - 5);
-
-        for (int i = startIndex; i < transactions.size(); i++) {
-            Transaction transaction = transactions.get(i);
-
-            Label transactionLabel = new Label(
-                    transaction.getName() + " | " +
-                            transaction.getAmount() + " " +
-                            transaction.getCurrency() + " | " +
-                            transaction.getType()
-            );
-
-            recentTransactionsBox.getChildren().add(transactionLabel);
-        }
 
 
         VBox summaryCard = new VBox();
@@ -71,5 +59,30 @@ public class DashboardView extends VBox {
                 summaryCard,
                 recentCard
         );
+        refresh();
+    }
+    public void refresh() {
+        balanceLabel.setText("Balance: " + service.getBalance() + " AMD");
+        incomeLabel.setText("Income: " + service.getTotalIncome() + " AMD");
+        expensesLabel.setText("Expenses: " + service.getTotalExpenses() + " AMD");
+
+        recentTransactionsBox.getChildren().clear();
+
+        List<Transaction> transactions = service.getAllTransactions();
+
+        int startIndex = Math.max(0, transactions.size() - 5);
+
+        for (int i = startIndex; i < transactions.size(); i++) {
+            Transaction transaction = transactions.get(i);
+
+            Label transactionLabel = new Label(
+                    transaction.getName() + " | " +
+                            transaction.getAmount() + " " +
+                            transaction.getCurrency() + " | " +
+                            transaction.getType()
+            );
+
+            recentTransactionsBox.getChildren().add(transactionLabel);
+        }
     }
 }

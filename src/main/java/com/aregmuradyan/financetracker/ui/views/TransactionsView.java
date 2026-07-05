@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 
 import java.time.LocalDate;
 
@@ -20,7 +21,6 @@ public class TransactionsView extends VBox {
     private final ObservableList<Transaction> transactionList;
 
     private long nextId = 1;
-
     public TransactionsView(TransactionService service) {
         this.service = service;
         this.transactionList = FXCollections.observableArrayList(this.service.getAllTransactions());
@@ -60,7 +60,8 @@ public class TransactionsView extends VBox {
         addButton.getStyleClass().add("action-button");
         Button removeButton = new Button("Remove Selected");
         removeButton.getStyleClass().add("action-button");
-
+        Button editButton = new Button("Edit Selected");
+        editButton.getStyleClass().add("action-button");
         TableView<Transaction> table = new TableView<>(transactionList);
 
         TableColumn<Transaction, Long> idColumn = new TableColumn<>("ID");
@@ -84,6 +85,32 @@ public class TransactionsView extends VBox {
         TableColumn<Transaction, LocalDate> dateColumn = new TableColumn<>("Date");
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
+        addButton.setOnAction(e -> {
+            double amount = Double.parseDouble(amountField.getText());
+
+                Transaction transaction = new Transaction(
+                        nextId++,
+                        nameField.getText(),
+                        descriptionField.getText(),
+                        amount,
+                        currencyBox.getValue(),
+                        typeBox.getValue(),
+                        categoryBox.getValue(),
+                        datePicker.getValue()
+                );
+
+                this.service.addTransaction(transaction);
+                transactionList.add(transaction);
+
+            nameField.clear();
+            descriptionField.clear();
+            amountField.clear();
+            currencyBox.setValue("AMD");
+            typeBox.setValue(TransactionType.EXPENSE);
+            categoryBox.setValue(Category.OTHER);
+            datePicker.setValue(LocalDate.now());
+        });
+
         table.getColumns().addAll(
                 idColumn,
                 nameColumn,
@@ -93,31 +120,19 @@ public class TransactionsView extends VBox {
                 categoryColumn,
                 dateColumn
         );
+        editButton.setOnAction(e -> {
+            Transaction selected = table.getSelectionModel().getSelectedItem();
 
-        addButton.setOnAction(e -> {
-            double amount = Double.parseDouble(amountField.getText());
+            if (selected == null) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("No transaction selected");
+                alert.setHeaderText(null);
+                alert.setContentText("Please select a transaction to edit.");
+                alert.showAndWait();
+                return;
+            }
 
-            Transaction transaction = new Transaction(
-                    nextId++,
-                    nameField.getText(),
-                    descriptionField.getText(),
-                    amount,
-                    currencyBox.getValue(),
-                    typeBox.getValue(),
-                    categoryBox.getValue(),
-                    datePicker.getValue()
-            );
-
-            this.service.addTransaction(transaction);
-            transactionList.add(transaction);
-
-            nameField.clear();
-            descriptionField.clear();
-            amountField.clear();
-            currencyBox.setValue("AMD");
-            typeBox.setValue(TransactionType.EXPENSE);
-            categoryBox.setValue(Category.OTHER);
-            datePicker.setValue(LocalDate.now());
+            openEditDialog(selected, table);
         });
 
         removeButton.setOnAction(e -> {
@@ -148,6 +163,7 @@ public class TransactionsView extends VBox {
         tableCard.getStyleClass().add("content-card");
 
         tableCard.getChildren().addAll(
+                editButton,
                 removeButton,
                 table
         );
@@ -157,5 +173,63 @@ public class TransactionsView extends VBox {
                 formCard,
                 tableCard
         );
+    }
+    private void openEditDialog(Transaction transaction, TableView<Transaction> table) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Edit Transaction");
+        dialog.setHeaderText("Update transaction details");
+
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        TextField nameField = new TextField(transaction.getName());
+        TextField descriptionField = new TextField(transaction.getDescription());
+        TextField amountField = new TextField(String.valueOf(transaction.getAmount()));
+
+        ComboBox<String> currencyBox = new ComboBox<>();
+        currencyBox.getItems().addAll("AMD", "USD", "EUR", "RUB");
+        currencyBox.setValue(transaction.getCurrency());
+
+        ComboBox<TransactionType> typeBox = new ComboBox<>();
+        typeBox.getItems().addAll(TransactionType.values());
+        typeBox.setValue(transaction.getType());
+
+        ComboBox<Category> categoryBox = new ComboBox<>();
+        categoryBox.getItems().addAll(Category.values());
+        categoryBox.setValue(transaction.getCategory());
+
+        DatePicker datePicker = new DatePicker(transaction.getDate());
+
+        GridPane grid = new GridPane();
+        grid.setHgap(12);
+        grid.setVgap(12);
+        grid.setPadding(new Insets(20));
+
+        grid.addRow(0, new Label("Name"), nameField);
+        grid.addRow(1, new Label("Description"), descriptionField);
+        grid.addRow(2, new Label("Amount"), amountField);
+        grid.addRow(3, new Label("Currency"), currencyBox);
+        grid.addRow(4, new Label("Type"), typeBox);
+        grid.addRow(5, new Label("Category"), categoryBox);
+        grid.addRow(6, new Label("Date"), datePicker);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.showAndWait().ifPresent(result -> {
+            if (result == saveButtonType) {
+                double amount = Double.parseDouble(amountField.getText());
+
+                transaction.setName(nameField.getText());
+                transaction.setDescription(descriptionField.getText());
+                transaction.setAmount(amount);
+                transaction.setCurrency(currencyBox.getValue());
+                transaction.setType(typeBox.getValue());
+                transaction.setCategory(categoryBox.getValue());
+                transaction.setDate(datePicker.getValue());
+
+                service.saveTransactions();
+                table.refresh();
+            }
+        });
     }
 }

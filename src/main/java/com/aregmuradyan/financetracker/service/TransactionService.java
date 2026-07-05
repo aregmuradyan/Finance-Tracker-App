@@ -57,6 +57,9 @@ public class TransactionService {
     public void removeTransaction(Transaction transaction) {
         repository.removeTransaction(transaction);
     }
+    public void saveTransactions() {
+        repository.saveTransactions();
+    }
 
     public List<Transaction> getTransactions() {
         return repository.getAllTransactions();

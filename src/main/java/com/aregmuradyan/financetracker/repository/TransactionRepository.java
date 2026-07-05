@@ -29,4 +29,8 @@ public class TransactionRepository {
     public List<Transaction> getAllTransactions() {
         return transactions;
     }
+
+    public void saveTransactions() {
+        storage.saveTransactions(transactions);
+    }
 }
