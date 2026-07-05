@@ -9,6 +9,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
+import javafx.scene.control.ContentDisplay;
 
 public class Sidebar extends VBox {
     private final Button dashboardButton;
@@ -16,6 +17,13 @@ public class Sidebar extends VBox {
     private final Button exchangeButton;
     private final Button logsButton;
     private final Button analyticsButton;
+    private final Label titleLabel;
+    private final Label version;
+
+    private boolean collapsed = false;
+
+    private static final double EXPANDED_WIDTH = 240;
+    private static final double COLLAPSED_WIDTH = 76;
 
     public Button getDashboardButton() {
         return dashboardButton;
@@ -40,13 +48,13 @@ public class Sidebar extends VBox {
     public Sidebar() {
         getStyleClass().add("sidebar");
 
-        dashboardButton = new Button("Dashboard");
-        transactionsButton = new Button("Transactions");
-        exchangeButton = new Button("Exchange Rates");
-        logsButton = new Button("Personal Log");
-        analyticsButton = new Button("Analytics");
+        dashboardButton = createSidebarButton("Dashboard", "fth-home");
+        transactionsButton = createSidebarButton("Transactions", "fth-credit-card");
+        analyticsButton = createSidebarButton("Analytics", "fth-pie-chart");
+        exchangeButton = createSidebarButton("Exchange Rates", "fth-dollar-sign");
+        logsButton = createSidebarButton("Personal Log", "fth-book-open");
 
-        Label titleLabel = new Label("FinanceTracker");
+        titleLabel = new Label("FinanceTracker");
         titleLabel.getStyleClass().add("sidebar-title");
 
         FontIcon collapseIcon = new FontIcon("fth-sidebar");
@@ -55,9 +63,13 @@ public class Sidebar extends VBox {
         Button collapseButton = new Button();
         collapseButton.setGraphic(collapseIcon);
         collapseButton.getStyleClass().add("collapse-button");
+        collapseButton.setOnAction(e -> toggleCollapse());
 
         setSpacing(20);
         setPadding(new Insets(18));
+        setPrefWidth(EXPANDED_WIDTH);
+        setMinWidth(EXPANDED_WIDTH);
+        setMaxWidth(EXPANDED_WIDTH);
 
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER_LEFT);
@@ -82,7 +94,6 @@ public class Sidebar extends VBox {
 
         for (Button button : buttons) {
             button.setMaxWidth(Double.MAX_VALUE);
-            button.getStyleClass().add("sidebar-button");
         }
 
         VBox navigation = new VBox();
@@ -98,7 +109,7 @@ public class Sidebar extends VBox {
         Region footerSpacer = new Region();
         VBox.setVgrow(footerSpacer, Priority.ALWAYS);
 
-        Label version = new Label("v1.0.0");
+        version = new Label("v1.0.0");
         version.getStyleClass().add("sidebar-version");
 
         VBox footer = new VBox(version);
@@ -111,6 +122,65 @@ public class Sidebar extends VBox {
                 footer
         );
     }
+    private Button createSidebarButton(String text, String iconName) {
+        FontIcon icon = new FontIcon(iconName);
+        icon.getStyleClass().add("sidebar-icon");
+
+        Button button = new Button(text);
+        button.setGraphic(icon);
+        button.setUserData(text);
+        button.setContentDisplay(ContentDisplay.LEFT);
+        button.getStyleClass().add("sidebar-button");
+
+        return button;
+    }
+
+    private void toggleCollapse() {
+        collapsed = !collapsed;
+
+        Button[] buttons = {
+                dashboardButton,
+                transactionsButton,
+                analyticsButton,
+                exchangeButton,
+                logsButton
+        };
+
+        if (collapsed) {
+            setPrefWidth(COLLAPSED_WIDTH);
+            setMinWidth(COLLAPSED_WIDTH);
+            setMaxWidth(COLLAPSED_WIDTH);
+
+            titleLabel.setVisible(false);
+            titleLabel.setManaged(false);
+
+            version.setVisible(false);
+            version.setManaged(false);
+
+            for (Button button : buttons) {
+                button.setText("");
+                button.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                button.setAlignment(Pos.CENTER);
+            }
+        } else {
+            setPrefWidth(EXPANDED_WIDTH);
+            setMinWidth(EXPANDED_WIDTH);
+            setMaxWidth(EXPANDED_WIDTH);
+
+            titleLabel.setVisible(true);
+            titleLabel.setManaged(true);
+
+            version.setVisible(true);
+            version.setManaged(true);
+
+            for (Button button : buttons) {
+                button.setText((String) button.getUserData());
+                button.setContentDisplay(ContentDisplay.LEFT);
+                button.setAlignment(Pos.CENTER_LEFT);
+            }
+        }
+    }
+
     public void setActiveButton(Button activeButton) {
         Button[] buttons = {
                 dashboardButton,

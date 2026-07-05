@@ -37,9 +37,7 @@ public class MainWindow extends Application {
         root = new BorderPane();
 
         sidebar = new Sidebar();
-        sidebar.prefWidthProperty().bind(root.widthProperty().multiply(0.20));
-        sidebar.setMinWidth(220);
-        sidebar.setMaxWidth(280);
+
 
         TransactionRepository repository = new TransactionRepository();
         TransactionService service = new TransactionService(repository);

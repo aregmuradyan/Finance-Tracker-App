@@ -1,11 +1,11 @@
 [ {
   "id" : 1,
-  "name" : "aregus",
+  "name" : "ar",
   "description" : "a",
-  "amount" : 50000.0,
-  "currency" : "EUR",
+  "amount" : 150000.0,
+  "currency" : "AMD",
   "type" : "EXPENSE",
-  "category" : "FOOD",
+  "category" : "SHOPPING",
   "date" : [ 2026, 6, 26 ]
 }, {
   "id" : 2,
