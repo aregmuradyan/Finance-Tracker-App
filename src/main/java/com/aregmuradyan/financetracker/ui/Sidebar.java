@@ -15,6 +15,9 @@ import javafx.util.Duration;
 import javafx.animation.FadeTransition;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.geometry.Bounds;
+import javafx.stage.Popup;
+
 
 public class Sidebar extends VBox {
     private final Button dashboardButton;
@@ -33,7 +36,9 @@ public class Sidebar extends VBox {
 
     private static final double EXPANDED_WIDTH = 240;
     private static final double COLLAPSED_WIDTH = 76;
+
     private final Map<Button, Label> buttonTextLabels = new HashMap<>();
+
 
     public Button getDashboardButton() {
         return dashboardButton;
@@ -162,6 +167,7 @@ public class Sidebar extends VBox {
         button.setMaxWidth(Double.MAX_VALUE);
 
         buttonTextLabels.put(button, textLabel);
+        attachCustomTooltip(button, text);
 
         return button;
     }
@@ -273,5 +279,32 @@ public class Sidebar extends VBox {
         FadeTransition fade = new FadeTransition(Duration.millis(120), node);
         fade.setToValue(targetOpacity);
         fade.play();
+    }
+
+    private void attachCustomTooltip(Button button, String text) {
+        Popup popup = new Popup();
+
+        Label tooltipLabel = new Label(text);
+        tooltipLabel.getStyleClass().add("custom-tooltip");
+
+        popup.getContent().add(tooltipLabel);
+        popup.setAutoHide(true);
+
+        button.setOnMouseEntered(e -> {
+            if (!collapsed) {
+                return;
+            }
+
+            Bounds bounds = button.localToScreen(button.getBoundsInLocal());
+
+            popup.show(
+                    button,
+                    bounds.getMaxX() + 10,
+                    bounds.getMinY() - 2
+            );
+        });
+
+        button.setOnMouseExited(e -> popup.hide());
+        button.setOnMousePressed(e -> popup.hide());
     }
 }

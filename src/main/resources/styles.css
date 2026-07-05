@@ -174,6 +174,18 @@
     -fx-background-color: rgba(255,255,255,0.16);
 }
 
+.custom-tooltip {
+    -fx-background-color: #1f2937;
+    -fx-background-radius: 8;
+    -fx-background-insets: 0;
+
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+
+    -fx-padding: 7 10;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.22), 10, 0, 0, 3);
+}
 
 /* =========================
    ICONS
