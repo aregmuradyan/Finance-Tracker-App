@@ -28,6 +28,7 @@ public class ExchangeView extends VBox {
 
         Button refreshButton = new Button("Refresh");
         refreshButton.getStyleClass().add("action-button");
+        refreshButton.getStyleClass().add("primary-action-button");
 
         refreshButton.setOnAction(e -> {
 

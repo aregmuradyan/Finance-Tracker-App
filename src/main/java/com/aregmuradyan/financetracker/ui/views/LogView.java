@@ -31,9 +31,11 @@ public class LogView extends VBox {
 
         Button addButton = new Button("Add Log");
         addButton.getStyleClass().add("action-button");
+        addButton.getStyleClass().add("primary-action-button");
 
         Button removeButton = new Button("Remove Selected");
         removeButton.getStyleClass().add("action-button");
+        removeButton.getStyleClass().add("primary-action-button");
 
         ListView<LogEntry> logList = new ListView<>();
         logList.getItems().addAll(service.getAllLogs());

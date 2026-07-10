@@ -201,7 +201,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.22), 10, 0, 0, 3);
 }
 
-/* JavaFX default tooltip backup */
 .tooltip {
     -fx-background-color: #1f2937;
     -fx-background-radius: 8;
@@ -278,7 +277,9 @@
 }
 
 
-/* ComboBox popup */
+/* =========================
+   COMBOBOX POPUP
+   ========================= */
 
 .combo-box-popup .list-view {
     -fx-background-color: white;
@@ -288,9 +289,8 @@
     -fx-padding: 4;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 14, 0, 0, 5);
 
-    -fx-pref-width: 78;
-    -fx-min-width: 78;
-    -fx-max-width: 78;
+    -fx-min-width: 150;
+    -fx-pref-width: 180;
 }
 
 .combo-box-popup .list-view .list-cell {
@@ -298,7 +298,7 @@
     -fx-background-radius: 8;
     -fx-text-fill: #111827;
     -fx-font-size: 13px;
-    -fx-padding: 8 10;
+    -fx-padding: 9 12;
     -fx-cursor: hand;
 }
 
@@ -312,7 +312,9 @@
 }
 
 
-/* Theme toggle */
+/* =========================
+   THEME TOGGLE
+   ========================= */
 
 .theme-toggle {
     -fx-background-color: transparent;
@@ -354,7 +356,9 @@
 }
 
 
-/* Top bar icon buttons */
+/* =========================
+   TOP BAR ICON BUTTONS
+   ========================= */
 
 .top-bar-icon-button {
     -fx-background-color: transparent;
@@ -398,7 +402,6 @@
    ========================= */
 
 .action-button {
-    -fx-background-color: #111827;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-padding: 10 16;
@@ -406,12 +409,17 @@
     -fx-cursor: hand;
 }
 
-.action-button:hover {
-    -fx-background-color: #374151;
+.primary-action-button {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: #1e40af;
 }
 
-.action-button:pressed {
-    -fx-background-color: #4b5563;
+.primary-action-button:hover {
+    -fx-background-color: #bfdbfe;
+}
+
+.primary-action-button:pressed {
+    -fx-background-color: #93c5fd;
 }
 
 .secondary-action-button {
@@ -423,6 +431,10 @@
     -fx-background-color: #dbeafe;
 }
 
+.secondary-action-button:pressed {
+    -fx-background-color: #bfdbfe;
+}
+
 .danger-action-button {
     -fx-background-color: #fee2e2;
     -fx-text-fill: #991b1b;
@@ -430,6 +442,10 @@
 
 .danger-action-button:hover {
     -fx-background-color: #fecaca;
+}
+
+.danger-action-button:pressed {
+    -fx-background-color: #fca5a5;
 }
 
 
@@ -448,11 +464,46 @@
     -fx-padding: 8;
 }
 
+.text-input {
+    -fx-text-fill: #111827;
+    -fx-prompt-text-fill: #9ca3af;
+}
+
 .text-field:focused,
 .text-area:focused,
 .combo-box:focused,
 .date-picker:focused {
     -fx-border-color: #93c5fd;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #111827;
+    -fx-background-color: transparent;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #374151;
+}
+
+
+/* =========================
+   TRANSACTION FORM
+   ========================= */
+
+.transaction-form-card {
+    -fx-spacing: 16;
+}
+
+.transaction-form-grid {
+    -fx-padding: 4 0 0 0;
+}
+
+.form-button-row {
+    -fx-padding: 4 0 0 0;
 }
 
 
@@ -462,6 +513,10 @@
 
 .table-card {
     -fx-spacing: 16;
+}
+
+.table-header-row {
+    -fx-spacing: 12;
 }
 
 .table-actions {
@@ -499,7 +554,7 @@
     -fx-text-fill: #374151;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-alignment: CENTER_LEFT;
+    -fx-alignment: CENTER;
 }
 
 .table-view .table-cell {
@@ -507,7 +562,47 @@
     -fx-padding: 10 14;
     -fx-text-fill: #111827;
     -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+}
+
+/* Specific column alignment */
+
+.table-view .table-cell.id-column {
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header.id-column .label {
+    -fx-alignment: CENTER;
+}
+
+.table-view .table-cell.name-column {
     -fx-alignment: CENTER_LEFT;
+}
+
+.table-view .column-header.name-column .label {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-view .table-cell.amount-column {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.table-view .column-header.amount-column .label {
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.table-view .table-cell.currency-column,
+.table-view .table-cell.type-column,
+.table-view .table-cell.category-column,
+.table-view .table-cell.date-column {
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header.currency-column .label,
+.table-view .column-header.type-column .label,
+.table-view .column-header.category-column .label,
+.table-view .column-header.date-column .label {
+    -fx-alignment: CENTER;
 }
 
 .table-row-cell {
@@ -652,7 +747,7 @@
    DARK MODE — BASE
    ========================================================= */
 
-.root.dark-mode {
+.dark-mode {
     -fx-background-color: #0f172a;
 }
 
@@ -853,6 +948,19 @@
    DARK MODE — BUTTONS
    ========================================================= */
 
+.dark-mode .primary-action-button {
+    -fx-background-color: rgba(59, 130, 246, 0.32);
+    -fx-text-fill: #dbeafe;
+}
+
+.dark-mode .primary-action-button:hover {
+    -fx-background-color: rgba(59, 130, 246, 0.44);
+}
+
+.dark-mode .primary-action-button:pressed {
+    -fx-background-color: rgba(59, 130, 246, 0.56);
+}
+
 .dark-mode .secondary-action-button {
     -fx-background-color: rgba(37, 99, 235, 0.22);
     -fx-text-fill: #bfdbfe;
@@ -860,6 +968,10 @@
 
 .dark-mode .secondary-action-button:hover {
     -fx-background-color: rgba(37, 99, 235, 0.32);
+}
+
+.dark-mode .secondary-action-button:pressed {
+    -fx-background-color: rgba(37, 99, 235, 0.42);
 }
 
 .dark-mode .danger-action-button {
@@ -871,18 +983,52 @@
     -fx-background-color: rgba(185, 28, 28, 0.36);
 }
 
+.dark-mode .danger-action-button:pressed {
+    -fx-background-color: rgba(185, 28, 28, 0.46);
+}
+
 
 /* =========================================================
    DARK MODE — INPUTS
    ========================================================= */
 
+.dark-mode .text-input {
+    -fx-text-fill: #f9fafb;
+    -fx-prompt-text-fill: #94a3b8;
+}
+
 .dark-mode .text-field,
-.dark-mode .text-area,
+.dark-mode .text-area {
+    -fx-control-inner-background: #1f2937;
+    -fx-background-color: #1f2937;
+    -fx-border-color: #374151;
+    -fx-text-fill: #f9fafb;
+    -fx-prompt-text-fill: #94a3b8;
+}
+
 .dark-mode .combo-box,
 .dark-mode .date-picker {
     -fx-background-color: #1f2937;
     -fx-border-color: #374151;
+}
+
+.dark-mode .combo-box .list-cell {
     -fx-text-fill: #f9fafb;
+    -fx-background-color: transparent;
+}
+
+.dark-mode .date-picker .text-field {
+    -fx-background-color: #1f2937;
+    -fx-text-fill: #f9fafb;
+    -fx-prompt-text-fill: #94a3b8;
+}
+
+.dark-mode .date-picker .arrow-button {
+    -fx-background-color: #1f2937;
+}
+
+.dark-mode .date-picker .arrow-button .arrow {
+    -fx-background-color: #cbd5e1;
 }
 
 

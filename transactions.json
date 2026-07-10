@@ -34,4 +34,22 @@
   "type" : "INCOME",
   "category" : "OTHER",
   "date" : [ 2026, 7, 11 ]
+}, {
+  "id" : 6,
+  "name" : "g",
+  "description" : "g",
+  "amount" : 15000.0,
+  "currency" : "RUB",
+  "type" : "EXPENSE",
+  "category" : "HEALTH",
+  "date" : [ 2026, 7, 11 ]
+}, {
+  "id" : 7,
+  "name" : "Oranges",
+  "description" : "bought some oranges ",
+  "amount" : 15000.0,
+  "currency" : "USD",
+  "type" : "EXPENSE",
+  "category" : "FOOD",
+  "date" : [ 2026, 7, 11 ]
 } ]
