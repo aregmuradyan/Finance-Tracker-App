@@ -8,16 +8,7 @@
   "category" : "SHOPPING",
   "date" : [ 2026, 6, 26 ]
 }, {
-  "id" : 2,
-  "name" : "b",
-  "description" : "b",
-  "amount" : 12431.0,
-  "currency" : "AMD",
-  "type" : "EXPENSE",
-  "category" : "INVESTMENT",
-  "date" : [ 2026, 6, 26 ]
-}, {
-  "id" : 1,
+  "id" : 3,
   "name" : "a",
   "description" : "a",
   "amount" : 15000.0,
@@ -26,7 +17,7 @@
   "category" : "ENTERTAINMENT",
   "date" : [ 2026, 7, 5 ]
 }, {
-  "id" : 1,
+  "id" : 4,
   "name" : "apples",
   "description" : "bought some apples",
   "amount" : 1200.0,

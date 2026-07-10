@@ -3,6 +3,7 @@ package com.aregmuradyan.financetracker.ui.views;
 import com.aregmuradyan.financetracker.model.Category;
 import com.aregmuradyan.financetracker.model.Transaction;
 import com.aregmuradyan.financetracker.model.TransactionType;
+import com.aregmuradyan.financetracker.service.AppSettings;
 import com.aregmuradyan.financetracker.service.TransactionService;
 import com.aregmuradyan.financetracker.ui.helper.PageHeader;
 import javafx.collections.FXCollections;
@@ -12,17 +13,21 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
-
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import java.time.LocalDate;
 
 public class TransactionsView extends VBox {
 
     private final TransactionService service;
     private final ObservableList<Transaction> transactionList;
+    private final AppSettings settings;
 
     private long nextId = 1;
-    public TransactionsView(TransactionService service) {
+    public TransactionsView(TransactionService service, AppSettings settings) {
         this.service = service;
+        this.settings = settings;
         this.transactionList = FXCollections.observableArrayList(this.service.getAllTransactions());
 
         setSpacing(15);
@@ -43,8 +48,12 @@ public class TransactionsView extends VBox {
         amountField.setPromptText("Amount");
 
         ComboBox<String> currencyBox = new ComboBox<>();
-        currencyBox.getItems().addAll("AMD", "USD", "EUR", "RUB");
-        currencyBox.setValue("AMD");
+        addCurrencyOptions(currencyBox);
+        currencyBox.setValue(settings.getSelectedCurrency());
+
+        settings.selectedCurrencyProperty().addListener((obs, oldCurrency, newCurrency) -> {
+            currencyBox.setValue(newCurrency);
+        });
 
         ComboBox<TransactionType> typeBox = new ComboBox<>();
         typeBox.getItems().addAll(TransactionType.values());
@@ -59,10 +68,18 @@ public class TransactionsView extends VBox {
         Button addButton = new Button("Add Transaction");
         addButton.getStyleClass().add("action-button");
         Button removeButton = new Button("Remove Selected");
-        removeButton.getStyleClass().add("action-button");
         Button editButton = new Button("Edit Selected");
         editButton.getStyleClass().add("action-button");
+        editButton.getStyleClass().add("secondary-action-button");
+        removeButton.getStyleClass().add("danger-action-button");
+        removeButton.getStyleClass().add("action-button");
         TableView<Transaction> table = new TableView<>(transactionList);
+        table.getStyleClass().add("clean-table");
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        table.setFixedCellSize(42);
+        table.setPrefHeight(320);
+        table.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(table, Priority.ALWAYS);
 
         TableColumn<Transaction, Long> idColumn = new TableColumn<>("ID");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -105,11 +122,19 @@ public class TransactionsView extends VBox {
             nameField.clear();
             descriptionField.clear();
             amountField.clear();
-            currencyBox.setValue("AMD");
+            currencyBox.setValue(settings.getSelectedCurrency());
             typeBox.setValue(TransactionType.EXPENSE);
             categoryBox.setValue(Category.OTHER);
             datePicker.setValue(LocalDate.now());
         });
+
+        idColumn.setPrefWidth(55);
+        nameColumn.setPrefWidth(170);
+        amountColumn.setPrefWidth(130);
+        currencyColumn.setPrefWidth(105);
+        typeColumn.setPrefWidth(120);
+        categoryColumn.setPrefWidth(160);
+        dateColumn.setPrefWidth(130);
 
         table.getColumns().addAll(
                 idColumn,
@@ -120,6 +145,7 @@ public class TransactionsView extends VBox {
                 categoryColumn,
                 dateColumn
         );
+
         editButton.setOnAction(e -> {
             Transaction selected = table.getSelectionModel().getSelectedItem();
 
@@ -159,12 +185,20 @@ public class TransactionsView extends VBox {
                 addButton
         );
 
+        HBox tableActions = new HBox();
+        tableActions.getStyleClass().add("table-actions");
+        tableActions.setAlignment(Pos.CENTER_LEFT);
+        tableActions.getChildren().addAll(
+                editButton,
+                removeButton
+        );
+
         VBox tableCard = new VBox();
         tableCard.getStyleClass().add("content-card");
+        tableCard.getStyleClass().add("table-card");
 
         tableCard.getChildren().addAll(
-                editButton,
-                removeButton,
+                tableActions,
                 table
         );
 
@@ -172,6 +206,20 @@ public class TransactionsView extends VBox {
                 header,
                 formCard,
                 tableCard
+        );
+    }
+    private void addCurrencyOptions(ComboBox<String> currencyBox) {
+        currencyBox.getItems().addAll(
+                "USD",
+                "AMD",
+                "EUR",
+                "RUB",
+                "GBP",
+                "CHF",
+                "CAD",
+                "AUD",
+                "JPY",
+                "CNY"
         );
     }
     private void openEditDialog(Transaction transaction, TableView<Transaction> table) {
@@ -187,7 +235,12 @@ public class TransactionsView extends VBox {
         TextField amountField = new TextField(String.valueOf(transaction.getAmount()));
 
         ComboBox<String> currencyBox = new ComboBox<>();
-        currencyBox.getItems().addAll("AMD", "USD", "EUR", "RUB");
+        addCurrencyOptions(currencyBox);
+
+        if (!currencyBox.getItems().contains(transaction.getCurrency())) {
+            currencyBox.getItems().add(transaction.getCurrency());
+        }
+
         currencyBox.setValue(transaction.getCurrency());
 
         ComboBox<TransactionType> typeBox = new ComboBox<>();

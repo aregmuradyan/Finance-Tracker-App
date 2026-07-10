@@ -31,7 +31,7 @@ public class ExchangeView extends VBox {
 
         refreshButton.setOnAction(e -> {
 
-            Map<String, Double> rates = service.getRates();
+            Map<String, Double> rates = service.getRates("USD");
 
             amdLabel.setText("USD → AMD : " + rates.get("AMD"));
             eurLabel.setText("USD → EUR : " + rates.get("EUR"));
