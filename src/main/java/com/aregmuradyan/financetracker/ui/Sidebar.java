@@ -1,5 +1,10 @@
 package com.aregmuradyan.financetracker.ui;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,24 +12,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import org.kordamp.ikonli.javafx.FontIcon;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.scene.paint.Color;
+import javafx.stage.Popup;
 import javafx.util.Duration;
-import javafx.animation.FadeTransition;
+import org.kordamp.ikonli.javafx.FontIcon;
+
 import java.util.HashMap;
 import java.util.Map;
-import javafx.geometry.Bounds;
-import javafx.stage.Popup;
-
 
 public class Sidebar extends VBox {
+
     private final Button dashboardButton;
     private final Button transactionsButton;
     private final Button exchangeButton;
     private final Button logsButton;
     private final Button analyticsButton;
+
     private final Label titleLabel;
     private final Label version;
 
@@ -38,7 +41,6 @@ public class Sidebar extends VBox {
     private static final double COLLAPSED_WIDTH = 76;
 
     private final Map<Button, Label> buttonTextLabels = new HashMap<>();
-
 
     public Button getDashboardButton() {
         return dashboardButton;
@@ -78,6 +80,7 @@ public class Sidebar extends VBox {
         Button collapseButton = new Button();
         collapseButton.setGraphic(collapseIcon);
         collapseButton.getStyleClass().add("collapse-button");
+
         collapseButton.setOnMouseEntered(e -> {
             if (collapsed) {
                 collapseIcon.setIconLiteral("fth-sidebar");
@@ -89,6 +92,7 @@ public class Sidebar extends VBox {
                 collapseIcon.setIconLiteral("fth-menu");
             }
         });
+
         collapseButton.setOnAction(e -> toggleCollapse());
 
         setSpacing(20);
@@ -148,6 +152,7 @@ public class Sidebar extends VBox {
                 footer
         );
     }
+
     private Button createSidebarButton(String text, String iconName) {
         FontIcon icon = new FontIcon(iconName);
         icon.getStyleClass().add("sidebar-icon");
@@ -200,6 +205,7 @@ public class Sidebar extends VBox {
             getStyleClass().add("sidebar-collapsed");
 
             collapseIcon.setIconLiteral("fth-menu");
+
             for (Button button : buttons) {
                 Label label = buttonTextLabels.get(button);
 
@@ -212,6 +218,7 @@ public class Sidebar extends VBox {
                 button.setAlignment(Pos.CENTER);
                 button.setMaxWidth(Double.MAX_VALUE);
             }
+
         } else {
             animateWidth(EXPANDED_WIDTH);
 
@@ -227,7 +234,6 @@ public class Sidebar extends VBox {
             headerSpacer.setManaged(true);
 
             getStyleClass().remove("sidebar-collapsed");
-
 
             collapseIcon.setIconLiteral("fth-sidebar");
 
@@ -302,6 +308,11 @@ public class Sidebar extends VBox {
                     bounds.getMaxX() + 10,
                     bounds.getMinY() - 2
             );
+
+            if (popup.getScene() != null) {
+                popup.getScene().setFill(javafx.scene.paint.Color.TRANSPARENT);
+                popup.getScene().getRoot().setStyle("-fx-background-color: transparent;");
+            }
         });
 
         button.setOnMouseExited(e -> popup.hide());
