@@ -24,11 +24,12 @@ public class TransactionsView extends VBox {
     private final ObservableList<Transaction> transactionList;
     private final AppSettings settings;
 
-    private long nextId = 1;
+    private long nextId;
     public TransactionsView(TransactionService service, AppSettings settings) {
         this.service = service;
         this.settings = settings;
         this.transactionList = FXCollections.observableArrayList(this.service.getAllTransactions());
+        this.nextId = calculateNextId();
 
         setSpacing(15);
         setPadding(new Insets(20));
@@ -208,6 +209,19 @@ public class TransactionsView extends VBox {
                 tableCard
         );
     }
+
+    private long calculateNextId() {
+        long maxId = 0;
+
+        for (Transaction transaction : service.getAllTransactions()) {
+            if (transaction.getId() > maxId) {
+                maxId = transaction.getId();
+            }
+        }
+
+        return maxId + 1;
+    }
+
     private void addCurrencyOptions(ComboBox<String> currencyBox) {
         currencyBox.getItems().addAll(
                 "USD",

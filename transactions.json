@@ -25,4 +25,13 @@
   "type" : "EXPENSE",
   "category" : "FOOD",
   "date" : [ 2026, 6, 5 ]
+}, {
+  "id" : 5,
+  "name" : "c",
+  "description" : "c",
+  "amount" : 500000.0,
+  "currency" : "USD",
+  "type" : "INCOME",
+  "category" : "OTHER",
+  "date" : [ 2026, 7, 11 ]
 } ]
