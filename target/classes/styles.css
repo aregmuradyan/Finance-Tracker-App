@@ -632,6 +632,80 @@
     -fx-text-fill: #6b7280;
 }
 
+/* =========================
+   EXCHANGE RATES
+   ========================= */
+
+.exchange-card {
+    -fx-spacing: 16;
+}
+
+.exchange-grid {
+    -fx-padding: 4 0 0 0;
+}
+
+.exchange-grid .text-field,
+.exchange-grid .combo-box {
+    -fx-pref-width: 160;
+}
+
+.exchange-result-card {
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 14;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 18;
+}
+
+.exchange-result-text {
+    -fx-spacing: 5;
+}
+
+.exchange-result-main {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.exchange-rate-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+}
+
+.exchange-status {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+}
+
+.exchange-header-row {
+    -fx-spacing: 12;
+}
+
+.quick-rates-list {
+    -fx-spacing: 8;
+}
+
+.quick-rate-row {
+    -fx-background-color: #f9fafb;
+    -fx-background-radius: 12;
+    -fx-border-color: #eef2f7;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-padding: 12 14;
+}
+
+.quick-rate-pair {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.quick-rate-value {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2563eb;
+}
 
 /* =========================
    CHARTS
@@ -1086,6 +1160,36 @@
     -fx-text-fill: #94a3b8;
 }
 
+/* =========================================================
+   DARK MODE — EXCHANGE RATES
+   ========================================================= */
+
+.dark-mode .exchange-result-card {
+    -fx-background-color: #1f2937;
+    -fx-border-color: #374151;
+}
+
+.dark-mode .exchange-result-main {
+    -fx-text-fill: #f9fafb;
+}
+
+.dark-mode .exchange-rate-subtitle,
+.dark-mode .exchange-status {
+    -fx-text-fill: #94a3b8;
+}
+
+.dark-mode .quick-rate-row {
+    -fx-background-color: #1f2937;
+    -fx-border-color: #374151;
+}
+
+.dark-mode .quick-rate-pair {
+    -fx-text-fill: #f9fafb;
+}
+
+.dark-mode .quick-rate-value {
+    -fx-text-fill: #93c5fd;
+}
 
 /* =========================================================
    DARK MODE — CHARTS

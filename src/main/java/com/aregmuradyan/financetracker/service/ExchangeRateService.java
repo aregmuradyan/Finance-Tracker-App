@@ -79,6 +79,10 @@ public class ExchangeRateService {
         }
     }
 
+    public Map<String, Double> getRates() {
+        return getRates("USD");
+    }
+
     public Map<String, Double> getRates(String baseCurrency) {
         String encodedBase = encode(baseCurrency);
         String url = API_BASE_URL + "/rates?base=" + encodedBase;
@@ -88,12 +92,29 @@ public class ExchangeRateService {
 
             Map<String, Double> rates = new TreeMap<>();
 
-            for (JsonNode node : root) {
-                String quote = node.get("quote").asText();
-                double rate = node.get("rate").asDouble();
+            if (root.isArray()) {
+                for (JsonNode node : root) {
+                    if (node.has("quote") && node.has("rate")) {
+                        String quote = node.get("quote").asText();
+                        double rate = node.get("rate").asDouble();
 
-                rates.put(quote, rate);
+                        rates.put(quote, rate);
+                    }
+                }
+            } else if (root.isObject()) {
+                if (root.has("rates")) {
+                    JsonNode ratesNode = root.get("rates");
+
+                    ratesNode.fields().forEachRemaining(entry -> {
+                        String quote = entry.getKey();
+                        double rate = entry.getValue().asDouble();
+
+                        rates.put(quote, rate);
+                    });
+                }
             }
+
+            rates.put(baseCurrency, 1.0);
 
             return rates;
         } catch (Exception e) {
@@ -106,6 +127,17 @@ public class ExchangeRateService {
             return 1.0;
         }
 
+        try {
+            Map<String, Double> rates = getRates(fromCurrency);
+
+            Double rate = rates.get(toCurrency);
+
+            if (rate != null) {
+                return rate;
+            }
+        } catch (Exception ignored) {
+        }
+
         String encodedFrom = encode(fromCurrency);
         String encodedTo = encode(toCurrency);
 
@@ -113,7 +145,24 @@ public class ExchangeRateService {
 
         try {
             JsonNode root = getJson(url);
-            return root.get("rate").asDouble();
+
+            if (root.has("rate")) {
+                return root.get("rate").asDouble();
+            }
+
+            if (root.isArray() && !root.isEmpty()) {
+                JsonNode firstRate = root.get(0);
+
+                if (firstRate.has("rate")) {
+                    return firstRate.get("rate").asDouble();
+                }
+            }
+
+            if (root.has("rates") && root.get("rates").has(toCurrency)) {
+                return root.get("rates").get(toCurrency).asDouble();
+            }
+
+            throw new RuntimeException("Exchange rate not found");
         } catch (Exception e) {
             throw new RuntimeException("Failed to load exchange rate", e);
         }
@@ -146,6 +195,7 @@ public class ExchangeRateService {
     private String encode(String value) {
         return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
+
     private void addFallbackCurrencies(Map<String, String> currencies) {
         currencies.put("AMD", "Armenian Dram");
         currencies.put("USD", "US Dollar");
