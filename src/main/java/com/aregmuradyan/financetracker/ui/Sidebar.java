@@ -71,7 +71,7 @@ public class Sidebar extends VBox {
         exchangeButton = createSidebarButton("Exchange Rates", "fth-dollar-sign");
         logsButton = createSidebarButton("Personal Log", "fth-book-open");
 
-        titleLabel = new Label("FinanceTracker");
+        titleLabel = new Label("MoneyTrail");
         titleLabel.getStyleClass().add("sidebar-title");
 
         collapseIcon = new FontIcon("fth-sidebar");

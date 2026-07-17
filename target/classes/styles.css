@@ -707,6 +707,94 @@
     -fx-text-fill: #2563eb;
 }
 
+
+/* =========================
+   PERSONAL LOG
+   ========================= */
+
+.log-input-card {
+    -fx-spacing: 14;
+}
+
+.log-history-card {
+    -fx-spacing: 16;
+}
+
+.log-card-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+}
+
+.log-text-area {
+    -fx-min-height: 110;
+}
+
+.log-button-row {
+    -fx-padding: 4 0 0 0;
+}
+
+.log-header-row {
+    -fx-spacing: 12;
+}
+
+.log-list {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.log-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 10 0;
+}
+
+.log-list .list-cell:empty {
+    -fx-padding: 0;
+}
+
+.log-list .list-cell:selected {
+    -fx-background-color: transparent;
+}
+
+.log-entry-card {
+    -fx-background-color: #f9fafb;
+    -fx-background-radius: 14;
+    -fx-border-color: #eef2f7;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+    -fx-padding: 14;
+    -fx-spacing: 8;
+}
+
+.log-entry-card:hover {
+    -fx-background-color: #f3f4f6;
+}
+
+.log-entry-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #111827;
+}
+
+.log-entry-date {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.log-list .list-cell:selected .log-entry-card {
+    -fx-background-color: #dbeafe;
+    -fx-border-color: #93c5fd;
+}
+
+.log-list .list-cell:selected .log-entry-text {
+    -fx-text-fill: #1e3a8a;
+}
+
+.log-list .list-cell:selected .log-entry-date {
+    -fx-text-fill: #2563eb;
+}
+
 /* =========================
    CHARTS
    ========================= */
@@ -1189,6 +1277,58 @@
 
 .dark-mode .quick-rate-value {
     -fx-text-fill: #93c5fd;
+}
+
+
+/* =========================================================
+   DARK MODE — PERSONAL LOG
+   ========================================================= */
+
+.dark-mode .log-card-subtitle {
+    -fx-text-fill: #94a3b8;
+}
+
+.dark-mode .log-list {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.dark-mode .log-list .list-cell {
+    -fx-background-color: transparent;
+}
+
+.dark-mode .log-list .list-cell:selected {
+    -fx-background-color: transparent;
+}
+
+.dark-mode .log-entry-card {
+    -fx-background-color: #1f2937;
+    -fx-border-color: #374151;
+}
+
+.dark-mode .log-entry-card:hover {
+    -fx-background-color: #263244;
+}
+
+.dark-mode .log-entry-text {
+    -fx-text-fill: #f9fafb;
+}
+
+.dark-mode .log-entry-date {
+    -fx-text-fill: #94a3b8;
+}
+
+.dark-mode .log-list .list-cell:selected .log-entry-card {
+    -fx-background-color: rgba(37, 99, 235, 0.30);
+    -fx-border-color: #3b82f6;
+}
+
+.dark-mode .log-list .list-cell:selected .log-entry-text {
+    -fx-text-fill: #eff6ff;
+}
+
+.dark-mode .log-list .list-cell:selected .log-entry-date {
+    -fx-text-fill: #bfdbfe;
 }
 
 /* =========================================================

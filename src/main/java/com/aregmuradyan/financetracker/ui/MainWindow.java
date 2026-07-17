@@ -70,7 +70,7 @@ public class MainWindow extends Application {
                 getClass().getResource("/styles.css").toExternalForm()
         );
 
-        stage.setTitle("Finance Tracker");
+        stage.setTitle("MoneyTrail");
         stage.setScene(scene);
 
         stage.setMinWidth(1100);
