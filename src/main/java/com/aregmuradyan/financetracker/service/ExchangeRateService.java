@@ -15,55 +15,39 @@ import java.util.TreeMap;
 
 public class ExchangeRateService {
 
-    private static final String API_BASE_URL = "https://api.frankfurter.dev/v2";
+    private static final String API_BASE_URL = "https://v6.exchangerate-api.com/v6";
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
+    private final String apiKey;
 
     public ExchangeRateService() {
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
+        this.apiKey = System.getenv("EXCHANGE_RATE_API_KEY");
+
+        System.out.println("API key loaded: " + (apiKey != null && !apiKey.isBlank()));
     }
 
     public Map<String, String> getCurrencies() {
-        String url = API_BASE_URL + "/currencies";
+        String url = API_BASE_URL + "/" + getApiKey() + "/codes";
 
         try {
             JsonNode root = getJson(url);
 
             Map<String, String> currencies = new TreeMap<>();
 
-            if (root.isArray()) {
-                for (JsonNode node : root) {
-                    String code = node.has("code")
-                            ? node.get("code").asText()
-                            : null;
+            JsonNode supportedCodes = root.get("supported_codes");
 
-                    String name = node.has("name")
-                            ? node.get("name").asText()
-                            : code;
+            if (supportedCodes != null && supportedCodes.isArray()) {
+                for (JsonNode codePair : supportedCodes) {
+                    if (codePair.isArray() && codePair.size() >= 2) {
+                        String code = codePair.get(0).asText();
+                        String name = codePair.get(1).asText();
 
-                    if (code != null && !code.isBlank()) {
                         currencies.put(code, name);
                     }
                 }
-            } else if (root.isObject()) {
-                root.fields().forEachRemaining(entry -> {
-                    String code = entry.getKey();
-                    JsonNode value = entry.getValue();
-
-                    String name;
-
-                    if (value.isTextual()) {
-                        name = value.asText();
-                    } else if (value.has("name")) {
-                        name = value.get("name").asText();
-                    } else {
-                        name = code;
-                    }
-
-                    currencies.put(code, name);
-                });
             }
 
             if (currencies.isEmpty()) {
@@ -85,38 +69,30 @@ public class ExchangeRateService {
 
     public Map<String, Double> getRates(String baseCurrency) {
         String encodedBase = encode(baseCurrency);
-        String url = API_BASE_URL + "/rates?base=" + encodedBase;
+        String url = API_BASE_URL + "/" + getApiKey() + "/latest/" + encodedBase;
 
         try {
             JsonNode root = getJson(url);
 
-            Map<String, Double> rates = new TreeMap<>();
-
-            if (root.isArray()) {
-                for (JsonNode node : root) {
-                    if (node.has("quote") && node.has("rate")) {
-                        String quote = node.get("quote").asText();
-                        double rate = node.get("rate").asDouble();
-
-                        rates.put(quote, rate);
-                    }
-                }
-            } else if (root.isObject()) {
-                if (root.has("rates")) {
-                    JsonNode ratesNode = root.get("rates");
-
-                    ratesNode.fields().forEachRemaining(entry -> {
-                        String quote = entry.getKey();
-                        double rate = entry.getValue().asDouble();
-
-                        rates.put(quote, rate);
-                    });
-                }
+            if (!root.has("result") || !root.get("result").asText().equals("success")) {
+                throw new RuntimeException("API returned error: " + root);
             }
 
-            rates.put(baseCurrency, 1.0);
+            Map<String, Double> rates = new TreeMap<>();
+
+            JsonNode conversionRates = root.get("conversion_rates");
+
+            if (conversionRates != null && conversionRates.isObject()) {
+                conversionRates.fields().forEachRemaining(entry -> {
+                    String quote = entry.getKey();
+                    double rate = entry.getValue().asDouble();
+
+                    rates.put(quote, rate);
+                });
+            }
 
             return rates;
+
         } catch (Exception e) {
             throw new RuntimeException("Failed to load exchange rates", e);
         }
@@ -127,42 +103,20 @@ public class ExchangeRateService {
             return 1.0;
         }
 
-        try {
-            Map<String, Double> rates = getRates(fromCurrency);
-
-            Double rate = rates.get(toCurrency);
-
-            if (rate != null) {
-                return rate;
-            }
-        } catch (Exception ignored) {
-        }
-
         String encodedFrom = encode(fromCurrency);
         String encodedTo = encode(toCurrency);
 
-        String url = API_BASE_URL + "/rate/" + encodedFrom + "/" + encodedTo;
+        String url = API_BASE_URL + "/" + getApiKey() + "/pair/" + encodedFrom + "/" + encodedTo;
 
         try {
             JsonNode root = getJson(url);
 
-            if (root.has("rate")) {
-                return root.get("rate").asDouble();
+            if (!root.has("result") || !root.get("result").asText().equals("success")) {
+                throw new RuntimeException("API returned error: " + root);
             }
 
-            if (root.isArray() && !root.isEmpty()) {
-                JsonNode firstRate = root.get(0);
+            return root.get("conversion_rate").asDouble();
 
-                if (firstRate.has("rate")) {
-                    return firstRate.get("rate").asDouble();
-                }
-            }
-
-            if (root.has("rates") && root.get("rates").has(toCurrency)) {
-                return root.get("rates").get(toCurrency).asDouble();
-            }
-
-            throw new RuntimeException("Exchange rate not found");
         } catch (Exception e) {
             throw new RuntimeException("Failed to load exchange rate", e);
         }
@@ -170,6 +124,14 @@ public class ExchangeRateService {
 
     public double convert(double amount, String fromCurrency, String toCurrency) {
         return amount * getRate(fromCurrency, toCurrency);
+    }
+
+    private String getApiKey() {
+        if (apiKey == null || apiKey.isBlank()) {
+            throw new RuntimeException("Missing EXCHANGE_RATE_API_KEY environment variable");
+        }
+
+        return apiKey;
     }
 
     private JsonNode getJson(String url) throws IOException, InterruptedException {
