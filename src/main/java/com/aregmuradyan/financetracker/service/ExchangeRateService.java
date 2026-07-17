@@ -12,6 +12,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ExchangeRateService {
 
@@ -20,11 +21,13 @@ public class ExchangeRateService {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private final String apiKey;
+    private final Map<String, Map<String, Double>> ratesCache;
 
     public ExchangeRateService() {
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
         this.apiKey = System.getenv("EXCHANGE_RATE_API_KEY");
+        this.ratesCache = new ConcurrentHashMap<>();
     }
 
     public Map<String, String> getCurrencies() {
@@ -97,31 +100,11 @@ public class ExchangeRateService {
     }
 
     public double getRate(String fromCurrency, String toCurrency) {
-        if (fromCurrency.equals(toCurrency)) {
-            return 1.0;
-        }
-
-        String encodedFrom = encode(fromCurrency);
-        String encodedTo = encode(toCurrency);
-
-        String url = API_BASE_URL + "/" + getApiKey() + "/pair/" + encodedFrom + "/" + encodedTo;
-
-        try {
-            JsonNode root = getJson(url);
-
-            if (!root.has("result") || !root.get("result").asText().equals("success")) {
-                throw new RuntimeException("API returned error: " + root);
-            }
-
-            return root.get("conversion_rate").asDouble();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load exchange rate", e);
-        }
+        return convertToCurrency(1.0, fromCurrency, toCurrency);
     }
 
     public double convert(double amount, String fromCurrency, String toCurrency) {
-        return amount * getRate(fromCurrency, toCurrency);
+        return convertToCurrency(amount, fromCurrency, toCurrency);
     }
 
     private String getApiKey() {
@@ -167,5 +150,37 @@ public class ExchangeRateService {
         currencies.put("AUD", "Australian Dollar");
         currencies.put("JPY", "Japanese Yen");
         currencies.put("CNY", "Chinese Yuan");
+    }
+
+    public double convertToCurrency(double amount, String currency, String selectedCurrency) {
+        String normalizedCurrency = currency.toUpperCase().trim();
+        String normalizedSelectedCurrency = selectedCurrency.toUpperCase().trim();
+
+        if (normalizedCurrency.equals(normalizedSelectedCurrency)) {
+            return amount;
+        }
+
+        Map<String, Double> rates = getCachedRates(normalizedSelectedCurrency);
+
+        Double currencyRate = rates.get(normalizedCurrency);
+
+        if (currencyRate == null || currencyRate == 0) {
+            throw new RuntimeException("Missing exchange rate for " + normalizedCurrency);
+        }
+
+        return amount / currencyRate;
+    }
+
+    public Map<String, Double> getCachedRates(String baseCurrency) {
+        String normalizedBaseCurrency = baseCurrency.toUpperCase().trim();
+
+        return ratesCache.computeIfAbsent(
+                normalizedBaseCurrency,
+                this::getRates
+        );
+    }
+
+    public void clearRateCache() {
+        ratesCache.clear();
     }
 }

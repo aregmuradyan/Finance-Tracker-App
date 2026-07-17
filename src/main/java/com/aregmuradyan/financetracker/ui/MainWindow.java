@@ -84,7 +84,10 @@ public class MainWindow extends Application {
             LogService logService,
             ExchangeRateService exchangeRateService
     ) {
-        dashboardView = new DashboardView(service);
+        dashboardView = new DashboardView(service, settings, exchangeRateService);
+        settings.selectedCurrencyProperty().addListener((obs, oldCurrency, newCurrency) -> {
+            dashboardView.refresh();
+        });
         TransactionsView transactionsView = new TransactionsView(service, settings);
         analyticsView = new AnalyticsView(service);
         ExchangeView exchangeView = new ExchangeView(exchangeRateService);

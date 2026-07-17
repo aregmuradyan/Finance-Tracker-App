@@ -3,6 +3,9 @@ package com.aregmuradyan.financetracker.ui.views;
 import com.aregmuradyan.financetracker.model.Transaction;
 import com.aregmuradyan.financetracker.service.TransactionService;
 import com.aregmuradyan.financetracker.ui.helper.PageHeader;
+import com.aregmuradyan.financetracker.service.AppSettings;
+import com.aregmuradyan.financetracker.service.ExchangeRateService;
+
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
@@ -15,13 +18,17 @@ import java.util.List;
 public class DashboardView extends VBox {
 
     private final TransactionService service;
+    private final AppSettings settings;
+    private final ExchangeRateService exchangeRateService;
     private Label balanceLabel;
     private Label incomeLabel;
     private Label expensesLabel;
     private VBox recentTransactionsBox;
 
-    public DashboardView(TransactionService service) {
+    public DashboardView(TransactionService service, AppSettings settings, ExchangeRateService exchangeRateService) {
         this.service = service;
+        this.settings = settings;
+        this.exchangeRateService = exchangeRateService;
 
         getStyleClass().add("page");
         PageHeader header = new PageHeader(
@@ -70,9 +77,24 @@ public class DashboardView extends VBox {
         refresh();
     }
     public void refresh() {
-        balanceLabel.setText(formatMoney(service.getBalance()));
-        incomeLabel.setText(formatMoney(service.getTotalIncome()));
-        expensesLabel.setText(formatMoney(service.getTotalExpenses()));
+        double totalIncome = 0;
+        double totalExpenses = 0;
+
+        for (Transaction transaction : service.getAllTransactions()) {
+            double convertedAmount = convertToSelectedCurrency(transaction);
+
+            if (transaction.getType().toString().equalsIgnoreCase("INCOME")) {
+                totalIncome += convertedAmount;
+            } else if (transaction.getType().toString().equalsIgnoreCase("EXPENSE")) {
+                totalExpenses += convertedAmount;
+            }
+        }
+
+        double balance = totalIncome - totalExpenses;
+
+        balanceLabel.setText(formatMoney(balance));
+        incomeLabel.setText(formatMoney(totalIncome));
+        expensesLabel.setText(formatMoney(totalExpenses));
 
         recentTransactionsBox.getChildren().clear();
 
@@ -94,6 +116,7 @@ public class DashboardView extends VBox {
             );
         }
     }
+
     private VBox createMetricCard(String title, Label valueLabel, String valueClass) {
         Label titleLabel = new Label(title);
         titleLabel.getStyleClass().add("metric-title");
@@ -130,7 +153,7 @@ public class DashboardView extends VBox {
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Label amountLabel = new Label(
-                String.format("%,.2f %s", transaction.getAmount(), transaction.getCurrency())
+                formatMoney(convertToSelectedCurrency(transaction))
         );
         amountLabel.getStyleClass().add("recent-amount");
 
@@ -153,7 +176,22 @@ public class DashboardView extends VBox {
         return row;
     }
 
+    private double convertToSelectedCurrency(Transaction transaction) {
+        String fromCurrency = transaction.getCurrency();
+        String toCurrency = settings.getSelectedCurrency();
+
+        if (fromCurrency.equals(toCurrency)) {
+            return transaction.getAmount();
+        }
+
+        return exchangeRateService.convert(
+                transaction.getAmount(),
+                fromCurrency,
+                toCurrency
+        );
+    }
+
     private String formatMoney(double amount) {
-        return String.format("%,.2f AMD", amount);
+        return String.format("%,.2f %s", amount, settings.getSelectedCurrency());
     }
 }

@@ -2,26 +2,26 @@
   "id" : 1,
   "name" : "a",
   "description" : "a",
-  "amount" : 150000.0,
+  "amount" : 200000.0,
   "currency" : "AMD",
   "type" : "EXPENSE",
   "category" : "SHOPPING",
   "date" : [ 2026, 6, 26 ]
 }, {
   "id" : 4,
-  "name" : "apples",
+  "name" : "phone",
   "description" : "bought some apples",
   "amount" : 1200.0,
   "currency" : "USD",
   "type" : "EXPENSE",
-  "category" : "FOOD",
+  "category" : "ENTERTAINMENT",
   "date" : [ 2026, 6, 5 ]
 }, {
   "id" : 5,
   "name" : "c",
   "description" : "c",
-  "amount" : 500000.0,
-  "currency" : "USD",
+  "amount" : 850000.0,
+  "currency" : "AMD",
   "type" : "INCOME",
   "category" : "OTHER",
   "date" : [ 2026, 7, 11 ]
@@ -39,8 +39,17 @@
   "name" : "Oranges",
   "description" : "bought some oranges ",
   "amount" : 15000.0,
-  "currency" : "USD",
+  "currency" : "AMD",
   "type" : "EXPENSE",
   "category" : "FOOD",
   "date" : [ 2026, 7, 11 ]
+}, {
+  "id" : 8,
+  "name" : "Food",
+  "description" : "bought food bro",
+  "amount" : 20000.0,
+  "currency" : "AMD",
+  "type" : "EXPENSE",
+  "category" : "FOOD",
+  "date" : [ 2026, 7, 18 ]
 } ]
