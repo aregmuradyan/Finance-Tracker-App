@@ -25,8 +25,6 @@ public class ExchangeRateService {
         this.httpClient = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
         this.apiKey = System.getenv("EXCHANGE_RATE_API_KEY");
-
-        System.out.println("API key loaded: " + (apiKey != null && !apiKey.isBlank()));
     }
 
     public Map<String, String> getCurrencies() {

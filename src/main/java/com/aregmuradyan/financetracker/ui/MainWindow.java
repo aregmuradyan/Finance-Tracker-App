@@ -65,13 +65,17 @@ public class MainWindow extends Application {
         setupLayout();
         setupNavigation();
 
-        Scene scene = new Scene(appContainer, 1200, 720);
+        Scene scene = new Scene(appContainer, 1280, 780);
         scene.getStylesheets().add(
                 getClass().getResource("/styles.css").toExternalForm()
         );
 
         stage.setTitle("Finance Tracker");
         stage.setScene(scene);
+
+        stage.setMinWidth(1100);
+        stage.setMinHeight(700);
+
         stage.show();
     }
 
