@@ -238,77 +238,9 @@
 }
 
 .top-bar .top-bar-combo {
-    -fx-background-color: transparent;
-    -fx-background-radius: 10;
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
-    -fx-padding: 5 8;
-    -fx-cursor: hand;
-
-    -fx-pref-width: 78;
-    -fx-min-width: 78;
-    -fx-max-width: 78;
-}
-
-.top-bar .top-bar-combo:hover {
-    -fx-background-color: rgba(17, 24, 39, 0.06);
-}
-
-.top-bar .top-bar-combo:showing {
-    -fx-background-color: rgba(17, 24, 39, 0.08);
-}
-
-.top-bar .top-bar-combo .list-cell {
-    -fx-text-fill: #111827;
-    -fx-font-size: 13px;
-    -fx-background-color: transparent;
-    -fx-padding: 4 4;
-    -fx-cursor: hand;
-}
-
-.top-bar .top-bar-combo .arrow-button {
-    -fx-background-color: transparent;
-    -fx-padding: 0 0 0 6;
-    -fx-cursor: hand;
-}
-
-.top-bar .top-bar-combo .arrow {
-    -fx-background-color: #374151;
-}
-
-
-/* =========================
-   COMBOBOX POPUP
-   ========================= */
-
-.combo-box-popup .list-view {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-border-color: #e5e7eb;
-    -fx-border-radius: 12;
-    -fx-padding: 4;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 14, 0, 0, 5);
-
-    -fx-min-width: 150;
-    -fx-pref-width: 180;
-}
-
-.combo-box-popup .list-view .list-cell {
-    -fx-background-color: transparent;
-    -fx-background-radius: 8;
-    -fx-text-fill: #111827;
-    -fx-font-size: 13px;
-    -fx-padding: 9 12;
-    -fx-cursor: hand;
-}
-
-.combo-box-popup .list-view .list-cell:hover {
-    -fx-background-color: rgba(17, 24, 39, 0.06);
-}
-
-.combo-box-popup .list-view .list-cell:selected {
-    -fx-background-color: rgba(96, 165, 250, 0.18);
-    -fx-text-fill: #111827;
+    -fx-pref-width: 105;
+    -fx-min-width: 105;
+    -fx-max-width: 105;
 }
 
 
@@ -491,6 +423,204 @@
 
 
 /* =========================
+   SEARCHABLE COMBO BOX
+   ========================= */
+
+.combo-box-base.searchable-combo {
+    -fx-background-color: #f9fafb;
+    -fx-background-radius: 12;
+    -fx-background-insets: 0;
+
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+
+    -fx-padding: 0;
+    -fx-cursor: hand;
+}
+
+.combo-box-base.searchable-combo:hover {
+    -fx-background-color: #f9fafb;
+    -fx-border-color: #cbd5e1;
+}
+
+.combo-box-base.searchable-combo:focused,
+.combo-box-base.searchable-combo:showing {
+    -fx-background-color: #f9fafb;
+    -fx-border-color: #93c5fd;
+}
+
+.combo-box-base.searchable-combo:editable > .text-field {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 12 0 0 12;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-radius: 12 0 0 12;
+
+    -fx-padding: 8 10 8 12;
+
+    -fx-text-fill: #111827;
+    -fx-prompt-text-fill: #9ca3af;
+}
+
+.combo-box-base.searchable-combo:editable > .text-field:focused {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.combo-box-base.searchable-combo > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 12 12 0;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+
+    -fx-padding: 0 10 0 6;
+}
+
+.combo-box-base.searchable-combo > .arrow-button:hover {
+    -fx-background-color: rgba(17, 24, 39, 0.04);
+}
+
+.combo-box-base.searchable-combo > .arrow-button > .arrow {
+    -fx-background-color: #6b7280;
+    -fx-padding: 4;
+}
+
+
+/* =========================
+   TOP BAR SEARCHABLE COMBO
+   ========================= */
+
+.top-bar .combo-box-base.searchable-combo,
+.top-bar .combo-box-base.top-bar-combo {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+    -fx-border-width: 0;
+
+    -fx-padding: 0;
+
+    -fx-pref-width: 105;
+    -fx-min-width: 105;
+    -fx-max-width: 105;
+
+    -fx-cursor: hand;
+}
+
+.top-bar .combo-box-base.searchable-combo:hover,
+.top-bar .combo-box-base.top-bar-combo:hover {
+    -fx-background-color: rgba(17, 24, 39, 0.06);
+    -fx-border-color: transparent;
+}
+
+.top-bar .combo-box-base.searchable-combo:focused,
+.top-bar .combo-box-base.searchable-combo:showing,
+.top-bar .combo-box-base.top-bar-combo:focused,
+.top-bar .combo-box-base.top-bar-combo:showing {
+    -fx-background-color: rgba(17, 24, 39, 0.08);
+    -fx-border-color: transparent;
+}
+
+.top-bar .combo-box-base.searchable-combo:editable > .text-field,
+.top-bar .combo-box-base.top-bar-combo:editable > .text-field {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-radius: 10;
+
+    -fx-padding: 5 4 5 8;
+
+    -fx-font-size: 13px;
+    -fx-text-fill: #111827;
+    -fx-prompt-text-fill: #9ca3af;
+}
+
+.top-bar .combo-box-base.searchable-combo:editable > .text-field:focused,
+.top-bar .combo-box-base.top-bar-combo:editable > .text-field:focused {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.top-bar .combo-box-base.searchable-combo > .arrow-button,
+.top-bar .combo-box-base.top-bar-combo > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0 10 10 0;
+
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+
+    -fx-padding: 0 8 0 4;
+}
+
+.top-bar .combo-box-base.searchable-combo > .arrow-button:hover,
+.top-bar .combo-box-base.top-bar-combo > .arrow-button:hover {
+    -fx-background-color: transparent;
+}
+
+.top-bar .combo-box-base.searchable-combo > .arrow-button > .arrow,
+.top-bar .combo-box-base.top-bar-combo > .arrow-button > .arrow {
+    -fx-background-color: #374151;
+    -fx-padding: 4;
+}
+
+
+/* =========================
+   COMBO DROPDOWN POPUP
+   ========================= */
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+
+    -fx-padding: 5;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 14, 0, 0, 5);
+
+    -fx-min-width: 150;
+    -fx-pref-width: 180;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+
+    -fx-text-fill: #111827;
+    -fx-font-size: 13px;
+
+    -fx-padding: 9 12;
+    -fx-cursor: hand;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: rgba(17, 24, 39, 0.06);
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: rgba(96, 165, 250, 0.18);
+    -fx-text-fill: #111827;
+}
+
+
+/* =========================
    TRANSACTION FORM
    ========================= */
 
@@ -565,8 +695,6 @@
     -fx-alignment: CENTER;
 }
 
-/* Specific column alignment */
-
 .table-view .table-cell.id-column {
     -fx-alignment: CENTER;
 }
@@ -631,6 +759,7 @@
 .table-view .placeholder .label {
     -fx-text-fill: #6b7280;
 }
+
 
 /* =========================
    EXCHANGE RATES
@@ -795,6 +924,7 @@
     -fx-text-fill: #2563eb;
 }
 
+
 /* =========================
    CHARTS
    ========================= */
@@ -957,40 +1087,9 @@
    DARK MODE — TOP BAR
    ========================================================= */
 
-.dark-mode .top-bar .top-bar-combo:hover,
 .dark-mode .theme-toggle:hover,
 .dark-mode .top-bar-icon-button:hover {
     -fx-background-color: rgba(255,255,255,0.08);
-}
-
-.dark-mode .top-bar .top-bar-combo:showing {
-    -fx-background-color: rgba(255,255,255,0.10);
-}
-
-.dark-mode .top-bar .top-bar-combo .list-cell {
-    -fx-text-fill: #f9fafb;
-}
-
-.dark-mode .top-bar .top-bar-combo .arrow {
-    -fx-background-color: #d1d5db;
-}
-
-.dark-mode .combo-box-popup .list-view {
-    -fx-background-color: #111827;
-    -fx-border-color: #374151;
-}
-
-.dark-mode .combo-box-popup .list-view .list-cell {
-    -fx-text-fill: #f9fafb;
-}
-
-.dark-mode .combo-box-popup .list-view .list-cell:hover {
-    -fx-background-color: rgba(59, 130, 246, 0.16);
-}
-
-.dark-mode .combo-box-popup .list-view .list-cell:selected {
-    -fx-background-color: rgba(37, 99, 235, 0.30);
-    -fx-text-fill: white;
 }
 
 .dark-mode .top-bar-icon {
@@ -1195,6 +1294,121 @@
 
 
 /* =========================================================
+   DARK MODE — SEARCHABLE COMBO BOX
+   ========================================================= */
+
+.dark-mode .combo-box-base.searchable-combo {
+    -fx-background-color: #1f2937;
+    -fx-border-color: #374151;
+}
+
+.dark-mode .combo-box-base.searchable-combo:hover {
+    -fx-background-color: #1f2937;
+    -fx-border-color: #475569;
+}
+
+.dark-mode .combo-box-base.searchable-combo:focused,
+.dark-mode .combo-box-base.searchable-combo:showing {
+    -fx-background-color: #1f2937;
+    -fx-border-color: #3b82f6;
+}
+
+.dark-mode .combo-box-base.searchable-combo:editable > .text-field {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-border-color: transparent;
+
+    -fx-text-fill: #f9fafb;
+    -fx-prompt-text-fill: #94a3b8;
+}
+
+.dark-mode .combo-box-base.searchable-combo > .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.dark-mode .combo-box-base.searchable-combo > .arrow-button:hover {
+    -fx-background-color: rgba(255,255,255,0.05);
+}
+
+.dark-mode .combo-box-base.searchable-combo > .arrow-button > .arrow {
+    -fx-background-color: #cbd5e1;
+}
+
+
+/* =========================================================
+   DARK MODE — TOP BAR SEARCHABLE COMBO
+   ========================================================= */
+
+.dark-mode .top-bar .combo-box-base.searchable-combo,
+.dark-mode .top-bar .combo-box-base.top-bar-combo {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.dark-mode .top-bar .combo-box-base.searchable-combo:hover,
+.dark-mode .top-bar .combo-box-base.top-bar-combo:hover {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-border-color: transparent;
+}
+
+.dark-mode .top-bar .combo-box-base.searchable-combo:focused,
+.dark-mode .top-bar .combo-box-base.searchable-combo:showing,
+.dark-mode .top-bar .combo-box-base.top-bar-combo:focused,
+.dark-mode .top-bar .combo-box-base.top-bar-combo:showing {
+    -fx-background-color: rgba(255,255,255,0.10);
+    -fx-border-color: transparent;
+}
+
+.dark-mode .top-bar .combo-box-base.searchable-combo:editable > .text-field,
+.dark-mode .top-bar .combo-box-base.top-bar-combo:editable > .text-field {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-border-color: transparent;
+
+    -fx-text-fill: #f9fafb;
+    -fx-prompt-text-fill: #94a3b8;
+}
+
+.dark-mode .top-bar .combo-box-base.searchable-combo > .arrow-button,
+.dark-mode .top-bar .combo-box-base.top-bar-combo > .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.dark-mode .top-bar .combo-box-base.searchable-combo > .arrow-button:hover,
+.dark-mode .top-bar .combo-box-base.top-bar-combo > .arrow-button:hover {
+    -fx-background-color: transparent;
+}
+
+.dark-mode .top-bar .combo-box-base.searchable-combo > .arrow-button > .arrow,
+.dark-mode .top-bar .combo-box-base.top-bar-combo > .arrow-button > .arrow {
+    -fx-background-color: #d1d5db;
+}
+
+
+/* =========================================================
+   DARK MODE — COMBO DROPDOWN POPUP
+   ========================================================= */
+
+.dark-mode .combo-box-popup .list-view {
+    -fx-background-color: #111827;
+    -fx-border-color: #374151;
+}
+
+.dark-mode .combo-box-popup .list-view .list-cell {
+    -fx-text-fill: #f9fafb;
+}
+
+.dark-mode .combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: rgba(59, 130, 246, 0.16);
+}
+
+.dark-mode .combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: rgba(37, 99, 235, 0.30);
+    -fx-text-fill: white;
+}
+
+
+/* =========================================================
    DARK MODE — TABLES AND LISTS
    ========================================================= */
 
@@ -1247,6 +1461,7 @@
 .dark-mode .table-view .placeholder .label {
     -fx-text-fill: #94a3b8;
 }
+
 
 /* =========================================================
    DARK MODE — EXCHANGE RATES
@@ -1330,6 +1545,7 @@
 .dark-mode .log-list .list-cell:selected .log-entry-date {
     -fx-text-fill: #bfdbfe;
 }
+
 
 /* =========================================================
    DARK MODE — CHARTS

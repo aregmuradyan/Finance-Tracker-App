@@ -2,6 +2,8 @@ package com.aregmuradyan.financetracker.ui.views;
 
 import com.aregmuradyan.financetracker.service.ExchangeRateService;
 import com.aregmuradyan.financetracker.ui.helper.PageHeader;
+import com.aregmuradyan.financetracker.ui.helper.SearchableComboBoxHelper;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
@@ -47,9 +49,11 @@ public class ExchangeView extends VBox {
 
         fromCurrencyBox = new ComboBox<>();
         fromCurrencyBox.setVisibleRowCount(8);
+        fromCurrencyBox.getStyleClass().add("searchable-combo");
 
         toCurrencyBox = new ComboBox<>();
         toCurrencyBox.setVisibleRowCount(8);
+        toCurrencyBox.getStyleClass().add("searchable-combo");
 
         resultLabel = new Label("Loading exchange rates...");
         resultLabel.getStyleClass().add("exchange-result-main");
@@ -180,6 +184,9 @@ public class ExchangeView extends VBox {
 
             fromCurrencyBox.setValue("USD");
             toCurrencyBox.setValue("AMD");
+
+            SearchableComboBoxHelper.makeSearchable(fromCurrencyBox);
+            SearchableComboBoxHelper.makeSearchable(toCurrencyBox);
 
             statusLabel.setText("Currencies loaded");
 

@@ -2,6 +2,8 @@ package com.aregmuradyan.financetracker.ui;
 
 import com.aregmuradyan.financetracker.service.AppSettings;
 import com.aregmuradyan.financetracker.service.ExchangeRateService;
+import com.aregmuradyan.financetracker.ui.helper.SearchableComboBoxHelper;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -11,6 +13,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import org.kordamp.ikonli.javafx.FontIcon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.application.Platform;
 
 public class TopBar extends HBox {
 
@@ -53,8 +59,12 @@ public class TopBar extends HBox {
 
         currencyBox.setValue(settings.getSelectedCurrency());
 
-        currencyBox.setOnAction(e -> {
-            settings.setSelectedCurrency(currencyBox.getValue());
+        SearchableComboBoxHelper.makeSearchable(currencyBox);
+
+        currencyBox.getSelectionModel().selectedItemProperty().addListener((obs, oldCurrency, newCurrency) -> {
+            if (newCurrency != null) {
+                settings.setSelectedCurrency(newCurrency);
+            }
         });
 
         FontIcon themeIcon = new FontIcon("fth-sun");
