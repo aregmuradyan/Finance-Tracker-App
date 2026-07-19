@@ -924,26 +924,153 @@
     -fx-text-fill: #2563eb;
 }
 
-
 /* =========================
-   CHARTS
+   ANALYTICS BAR CHART
    ========================= */
 
-.chart {
-    -fx-background-color: transparent;
+.analytics-bar-chart .chart-bar {
+    -fx-bar-fill: #60a5fa;
+    -fx-background-radius: 7 7 2 2;
+    -fx-background-insets: 0;
 }
 
-.chart-plot-background {
-    -fx-background-color: transparent;
+.analytics-bar-chart .chart-bar:hover {
+    -fx-bar-fill: #3b82f6;
 }
 
-.chart-title {
-    -fx-text-fill: #1f2937;
+.analytics-bar-chart .chart-horizontal-grid-lines {
+    -fx-stroke: #e5e7eb;
+    -fx-stroke-dash-array: 3 5;
+}
+
+.analytics-bar-chart .axis {
+    -fx-tick-label-fill: #6b7280;
+}
+
+.analytics-bar-chart .axis-label {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+}
+
+.analytics-bar-chart .axis-tick-mark,
+.analytics-bar-chart .axis-minor-tick-mark {
+    -fx-stroke: #d1d5db;
+}
+
+
+/* DARK MODE */
+
+.dark-mode .analytics-bar-chart .chart-bar {
+    -fx-bar-fill: #3b82f6;
+}
+
+.dark-mode .analytics-bar-chart .chart-bar:hover {
+    -fx-bar-fill: #60a5fa;
+}
+
+.dark-mode .analytics-bar-chart .chart-horizontal-grid-lines {
+    -fx-stroke: #263244;
+}
+
+.dark-mode .analytics-bar-chart .axis {
+    -fx-tick-label-fill: #94a3b8;
+}
+
+.dark-mode .analytics-bar-chart .axis-label {
+    -fx-text-fill: #94a3b8;
+}
+
+.dark-mode .analytics-bar-chart .axis-tick-mark,
+.dark-mode .analytics-bar-chart .axis-minor-tick-mark {
+    -fx-stroke: #475569;
+}
+
+/* =========================
+   ANALYTICS POPUP
+   ========================= */
+
+.analytics-tooltip {
+    -fx-min-width: 250px;
+    -fx-padding: 16 20;
+    -fx-spacing: 6;
+
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+.analytics-tooltip-title {
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
 }
 
-.axis {
-    -fx-tick-label-fill: #6b7280;
+.analytics-tooltip-amount {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.analytics-tooltip-percent {
+    -fx-font-size: 12px;
+}
+
+/* Light popup */
+
+.analytics-tooltip-light {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dbeafe;
+    -fx-border-width: 1;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(15, 23, 42, 0.20),
+        24,
+        0.14,
+        0,
+        8
+    );
+}
+
+.analytics-tooltip-light .analytics-tooltip-title {
+    -fx-text-fill: #475569;
+}
+
+.analytics-tooltip-light .analytics-tooltip-amount {
+    -fx-text-fill: #2563eb;
+}
+
+.analytics-tooltip-light .analytics-tooltip-percent {
+    -fx-text-fill: #64748b;
+}
+
+/* Dark popup */
+
+.analytics-tooltip-dark {
+    -fx-background-color: #0f172a;
+    -fx-border-color: #334155;
+    -fx-border-width: 1;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0, 0, 0, 0.50),
+        26,
+        0.16,
+        0,
+        9
+    );
+}
+
+.analytics-tooltip-dark .analytics-tooltip-title {
+    -fx-text-fill: #cbd5e1;
+}
+
+.analytics-tooltip-dark .analytics-tooltip-amount {
+    -fx-text-fill: #60a5fa;
+}
+
+.analytics-tooltip-dark .analytics-tooltip-percent {
+    -fx-text-fill: #94a3b8;
 }
 
 

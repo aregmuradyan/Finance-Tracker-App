@@ -89,7 +89,7 @@ public class MainWindow extends Application {
             dashboardView.refresh();
         });
         TransactionsView transactionsView = new TransactionsView(service, settings);
-        analyticsView = new AnalyticsView(service);
+        analyticsView = new AnalyticsView(service, settings, exchangeRateService);
         ExchangeView exchangeView = new ExchangeView(exchangeRateService);
         LogView logView = new LogView(logService);
 
